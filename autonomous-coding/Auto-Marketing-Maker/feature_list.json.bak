@@ -1,0 +1,2652 @@
+[
+  {
+    "category": "functional",
+    "description": "Server starts successfully on configured port and responds to health check",
+    "steps": [
+      "Step 1: Start the backend server using npm/pnpm",
+      "Step 2: Send GET request to health check endpoint",
+      "Step 3: Verify server responds with 200 status"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Frontend builds and serves correctly on specified frontend port",
+    "steps": [
+      "Step 1: Build frontend with Vite",
+      "Step 2: Start frontend development server",
+      "Step 3: Navigate to frontend URL",
+      "Step 4: Verify page loads without errors"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "SQLite database initializes with correct schema",
+    "steps": [
+      "Step 1: Start server for first time",
+      "Step 2: Check database file exists",
+      "Step 3: Verify all tables are created (users, clients, campaigns, tasks, etc.)",
+      "Step 4: Confirm schema matches specification"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Claude API client initializes with API key from /tmp/api-key",
+    "steps": [
+      "Step 1: Server reads API key from /tmp/api-key file",
+      "Step 2: Initialize Anthropic SDK client",
+      "Step 3: Verify client is ready for requests",
+      "Step 4: Test basic API connection"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Git repository initializes with proper structure",
+    "steps": [
+      "Step 1: Initialize git repository if not exists",
+      "Step 2: Create initial .gitignore",
+      "Step 3: Verify .git directory exists",
+      "Step 4: Confirm repository is ready for commits"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Agency core directory structure is created correctly",
+    "steps": [
+      "Step 1: Create /agency_core directory",
+      "Step 2: Create subdirectories: /sops, /clients, /memory, /harness",
+      "Step 3: Verify all directories exist",
+      "Step 4: Confirm proper permissions"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Super Agent chat interface loads and displays correctly",
+    "steps": [
+      "Step 1: Navigate to main dashboard",
+      "Step 2: Click Super Agent floating button",
+      "Step 3: Verify chat panel opens",
+      "Step 4: Confirm input field is ready"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Super Agent responds to simple greeting with context-aware message",
+    "steps": [
+      "Step 1: Open Super Agent chat",
+      "Step 2: Type 'Hello' and send",
+      "Step 3: Wait for response",
+      "Step 4: Verify agent responds appropriately"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Super Agent lists all available system functions when asked",
+    "steps": [
+      "Step 1: Open Super Agent chat",
+      "Step 2: Ask 'What functions can you perform?'",
+      "Step 3: Verify response includes function categories",
+      "Step 4: Confirm all major features are mentioned"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Super Agent streaming responses display in real-time",
+    "steps": [
+      "Step 1: Open Super Agent chat",
+      "Step 2: Ask a question requiring detailed response",
+      "Step 3: Observe response appears gradually",
+      "Step 4: Verify SSE connection works properly"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Main dashboard loads with all key metric cards",
+    "steps": [
+      "Step 1: Navigate to dashboard route",
+      "Step 2: Verify metric cards render",
+      "Step 3: Check for client count, campaign count, task queue",
+      "Step 4: Confirm layout is correct"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Sidebar navigation displays all main sections",
+    "steps": [
+      "Step 1: Load application",
+      "Step 2: Check sidebar is visible",
+      "Step 3: Verify navigation items: Dashboard, Clients, Campaigns, Tasks, Intel, Reports",
+      "Step 4: Confirm icons and labels are correct"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Sidebar can be collapsed and expanded",
+    "steps": [
+      "Step 1: Click collapse button on sidebar",
+      "Step 2: Verify sidebar width reduces",
+      "Step 3: Click expand button",
+      "Step 4: Confirm sidebar returns to full width"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Navigation between sections updates content area correctly",
+    "steps": [
+      "Step 1: Click Dashboard in sidebar",
+      "Step 2: Verify dashboard content displays",
+      "Step 3: Click Clients in sidebar",
+      "Step 4: Verify clients list displays",
+      "Step 5: Confirm active state updates"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Theme switcher toggles between light and dark modes",
+    "steps": [
+      "Step 1: Find theme toggle in settings or header",
+      "Step 2: Click to switch to dark mode",
+      "Step 3: Verify background changes to dark",
+      "Step 4: Click to switch back to light",
+      "Step 5: Confirm light theme is restored"
+    ],
+    "passes": true
+  },
+  {
+    "category": "style",
+    "description": "Dark mode uses correct color palette from design system",
+    "steps": [
+      "Step 1: Enable dark mode",
+      "Step 2: Take screenshot of dashboard",
+      "Step 3: Verify background is #0F172A",
+      "Step 4: Verify surface elements use #1E293B",
+      "Step 5: Confirm text is #F1F5F9"
+    ],
+    "passes": true
+  },
+  {
+    "category": "style",
+    "description": "Light mode uses correct color palette from design system",
+    "steps": [
+      "Step 1: Enable light mode",
+      "Step 2: Take screenshot of dashboard",
+      "Step 3: Verify background is #FFFFFF",
+      "Step 4: Verify surface elements use #F8FAFC",
+      "Step 5: Confirm text is #1E293B"
+    ],
+    "passes": true
+  },
+  {
+    "category": "style",
+    "description": "Primary buttons use gradient background and correct styling",
+    "steps": [
+      "Step 1: Navigate to page with primary buttons",
+      "Step 2: Take screenshot",
+      "Step 3: Verify gradient background (blue to purple)",
+      "Step 4: Confirm rounded-lg corners",
+      "Step 5: Check white text color"
+    ],
+    "passes": true
+  },
+  {
+    "category": "style",
+    "description": "Typography uses correct font stack and weights",
+    "steps": [
+      "Step 1: Inspect page elements",
+      "Step 2: Verify headings use font-bold and tracking-tight",
+      "Step 3: Confirm body text uses leading-relaxed",
+      "Step 4: Check system font stack is applied"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Create new client via API endpoint",
+    "steps": [
+      "Step 1: Send POST to /api/clients with client data",
+      "Step 2: Verify 201 status response",
+      "Step 3: Check client ID is returned",
+      "Step 4: Confirm client exists in database"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Retrieve all clients via API endpoint",
+    "steps": [
+      "Step 1: Create multiple test clients",
+      "Step 2: Send GET to /api/clients",
+      "Step 3: Verify 200 status response",
+      "Step 4: Confirm all clients are returned in array"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Retrieve single client by ID via API",
+    "steps": [
+      "Step 1: Create a test client",
+      "Step 2: Send GET to /api/clients/:id",
+      "Step 3: Verify 200 status response",
+      "Step 4: Confirm correct client data is returned"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Update client information via API",
+    "steps": [
+      "Step 1: Create a test client",
+      "Step 2: Send PUT to /api/clients/:id with updated data",
+      "Step 3: Verify 200 status response",
+      "Step 4: Confirm changes are persisted in database"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Delete client via API endpoint",
+    "steps": [
+      "Step 1: Create a test client",
+      "Step 2: Send DELETE to /api/clients/:id",
+      "Step 3: Verify 200 or 204 status response",
+      "Step 4: Confirm client no longer exists in database"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Client onboarding wizard opens and displays all steps",
+    "steps": [
+      "Step 1: Click 'New Client' button",
+      "Step 2: Verify wizard modal opens",
+      "Step 3: Check step indicators show all onboarding stages",
+      "Step 4: Confirm first step displays correctly"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Client onboarding accepts website URL and validates format",
+    "steps": [
+      "Step 1: Open client onboarding wizard",
+      "Step 2: Enter invalid URL (no protocol)",
+      "Step 3: Verify validation error appears",
+      "Step 4: Enter valid URL",
+      "Step 5: Confirm validation passes"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Client onboarding allows file upload for brand assets",
+    "steps": [
+      "Step 1: Navigate to asset upload step in wizard",
+      "Step 2: Click upload button",
+      "Step 3: Select PDF or image file",
+      "Step 4: Verify file appears in upload list",
+      "Step 5: Confirm file can be removed"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Brand absorption agent processes client website and extracts information",
+    "steps": [
+      "Step 1: Complete client onboarding with valid URL",
+      "Step 2: Trigger brand absorption process",
+      "Step 3: Verify agent executes and streams progress",
+      "Step 4: Confirm brand voice data is extracted",
+      "Step 5: Check data is saved to client record"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "ICP definition wizard captures demographic information",
+    "steps": [
+      "Step 1: Navigate to ICP definition for client",
+      "Step 2: Enter age range, gender, location",
+      "Step 3: Add income level and education",
+      "Step 4: Save ICP data",
+      "Step 5: Verify data persists in client record"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "ICP definition wizard captures psychographic information",
+    "steps": [
+      "Step 1: Navigate to psychographics section of ICP wizard",
+      "Step 2: Enter interests, values, lifestyle",
+      "Step 3: Add pain points and desires",
+      "Step 4: Save psychographic data",
+      "Step 5: Verify data is stored correctly"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Client workspace directories are created on client creation",
+    "steps": [
+      "Step 1: Create new client",
+      "Step 2: Check /agency_core/clients/[client_id] directory exists",
+      "Step 3: Verify subdirectories: /brand_voice, /assets, /campaigns",
+      "Step 4: Confirm proper permissions are set"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Client list view displays all clients with key information",
+    "steps": [
+      "Step 1: Create multiple test clients",
+      "Step 2: Navigate to Clients section",
+      "Step 3: Verify all clients appear in list",
+      "Step 4: Check each shows name, status, creation date",
+      "Step 5: Confirm click navigates to client detail"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Client grid view displays clients as cards",
+    "steps": [
+      "Step 1: Navigate to Clients section",
+      "Step 2: Toggle to grid view",
+      "Step 3: Verify clients display as cards",
+      "Step 4: Check each card shows key metrics",
+      "Step 5: Confirm responsive grid layout"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Client detail page shows complete client information",
+    "steps": [
+      "Step 1: Click on a client from list",
+      "Step 2: Verify detail page loads",
+      "Step 3: Check all client data is displayed",
+      "Step 4: Confirm tabs for campaigns, brand voice, ICP",
+      "Step 5: Verify action buttons are present"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Client archive functionality marks client as archived",
+    "steps": [
+      "Step 1: Navigate to client detail page",
+      "Step 2: Click archive button",
+      "Step 3: Confirm archive action in dialog",
+      "Step 4: Verify client is_archived flag is true",
+      "Step 5: Check client is hidden from active list"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Archived clients can be restored",
+    "steps": [
+      "Step 1: Archive a test client",
+      "Step 2: Navigate to archived clients view",
+      "Step 3: Click restore button on archived client",
+      "Step 4: Confirm restoration",
+      "Step 5: Verify client appears in active list"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Client quick-switch dropdown in sidebar works correctly",
+    "steps": [
+      "Step 1: Create multiple clients",
+      "Step 2: Click client dropdown in sidebar",
+      "Step 3: Verify all active clients appear in list",
+      "Step 4: Select a client",
+      "Step 5: Confirm context switches to selected client"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Competitor analysis generates list of competitors",
+    "steps": [
+      "Step 1: Navigate to client competitor section",
+      "Step 2: Trigger competitor analysis",
+      "Step 3: Verify agent executes analysis",
+      "Step 4: Check competitor list is generated",
+      "Step 5: Confirm competitors are saved to database"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "SWOT analysis generates complete SWOT for client",
+    "steps": [
+      "Step 1: Navigate to client SWOT section",
+      "Step 2: Click 'Generate SWOT' button",
+      "Step 3: Verify agent analyzes client data",
+      "Step 4: Check all four quadrants are populated",
+      "Step 5: Confirm SWOT can be edited and saved"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Create new campaign via API endpoint",
+    "steps": [
+      "Step 1: Send POST to /api/campaigns with campaign data",
+      "Step 2: Verify 201 status response",
+      "Step 3: Check campaign ID is returned",
+      "Step 4: Confirm campaign exists in database"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Retrieve all campaigns via API endpoint",
+    "steps": [
+      "Step 1: Create multiple test campaigns",
+      "Step 2: Send GET to /api/campaigns",
+      "Step 3: Verify 200 status response",
+      "Step 4: Confirm all campaigns are returned"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Retrieve campaigns filtered by client ID",
+    "steps": [
+      "Step 1: Create campaigns for different clients",
+      "Step 2: Send GET to /api/campaigns?client_id=X",
+      "Step 3: Verify only campaigns for client X are returned",
+      "Step 4: Confirm filter works correctly"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Update campaign status via API",
+    "steps": [
+      "Step 1: Create a test campaign",
+      "Step 2: Send PUT to /api/campaigns/:id with new status",
+      "Step 3: Verify 200 status response",
+      "Step 4: Confirm status change is persisted"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Campaign creation wizard opens with step indicators",
+    "steps": [
+      "Step 1: Select a client",
+      "Step 2: Click 'New Campaign' button",
+      "Step 3: Verify wizard modal opens",
+      "Step 4: Check all wizard steps are visible",
+      "Step 5: Confirm first step is active"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Campaign wizard allows campaign name and description entry",
+    "steps": [
+      "Step 1: Open campaign creation wizard",
+      "Step 2: Enter campaign name",
+      "Step 3: Enter campaign description",
+      "Step 4: Verify input validation works",
+      "Step 5: Confirm can proceed to next step"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Campaign wizard angle development generates multiple angle options",
+    "steps": [
+      "Step 1: Navigate to angle development step in wizard",
+      "Step 2: Click 'Generate Angles' button",
+      "Step 3: Verify agent executes and streams progress",
+      "Step 4: Check multiple angle options are presented",
+      "Step 5: Confirm can select preferred angle"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Campaign wizard offer structuring captures offer details",
+    "steps": [
+      "Step 1: Navigate to offer step in wizard",
+      "Step 2: Enter discount percentage or value",
+      "Step 3: Add bundle information if applicable",
+      "Step 4: Enter guarantee details",
+      "Step 5: Verify offer data is captured"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Campaign wizard budget allocation allows per-platform budgets",
+    "steps": [
+      "Step 1: Navigate to budget step in wizard",
+      "Step 2: Enter total campaign budget",
+      "Step 3: Allocate budget to Meta, Google, TikTok",
+      "Step 4: Verify total equals 100%",
+      "Step 5: Confirm budget data is saved"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Campaign wizard schedule sets start and end dates",
+    "steps": [
+      "Step 1: Navigate to schedule step in wizard",
+      "Step 2: Select campaign start date",
+      "Step 3: Select campaign end date",
+      "Step 4: Verify date validation works",
+      "Step 5: Confirm schedule is saved to campaign"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Campaign wizard review step shows complete campaign summary",
+    "steps": [
+      "Step 1: Complete all wizard steps",
+      "Step 2: Navigate to review step",
+      "Step 3: Verify all entered data is displayed",
+      "Step 4: Check can navigate back to edit",
+      "Step 5: Confirm create button is enabled"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Campaign creation saves complete campaign to database",
+    "steps": [
+      "Step 1: Complete campaign wizard",
+      "Step 2: Click 'Create Campaign' button",
+      "Step 3: Verify success message appears",
+      "Step 4: Check campaign exists in database",
+      "Step 5: Confirm all data is correctly saved"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Campaign list view shows all campaigns with status badges",
+    "steps": [
+      "Step 1: Create campaigns with different statuses",
+      "Step 2: Navigate to Campaigns section",
+      "Step 3: Verify all campaigns display",
+      "Step 4: Check status badges are color-coded",
+      "Step 5: Confirm badges match campaign status"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Campaign cards display key performance metrics",
+    "steps": [
+      "Step 1: Navigate to Campaigns section",
+      "Step 2: View campaign cards",
+      "Step 3: Verify each shows budget, spend, ROAS",
+      "Step 4: Check impressions and clicks are displayed",
+      "Step 5: Confirm metrics update with real data"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Campaign detail page shows complete campaign information",
+    "steps": [
+      "Step 1: Click on a campaign card",
+      "Step 2: Verify detail page loads",
+      "Step 3: Check all campaign data is visible",
+      "Step 4: Confirm tabs for performance, creatives, settings",
+      "Step 5: Verify action buttons are present"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Campaign launch endpoint changes status to active",
+    "steps": [
+      "Step 1: Create campaign in draft status",
+      "Step 2: Send POST to /api/campaigns/:id/launch",
+      "Step 3: Verify 200 status response",
+      "Step 4: Check campaign status is now 'active'",
+      "Step 5: Confirm launched_at timestamp is set"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Campaign pause endpoint changes status to paused",
+    "steps": [
+      "Step 1: Create active campaign",
+      "Step 2: Send POST to /api/campaigns/:id/pause",
+      "Step 3: Verify 200 status response",
+      "Step 4: Check campaign status is now 'paused'",
+      "Step 5: Confirm pause is persisted"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Campaign performance endpoint returns metrics",
+    "steps": [
+      "Step 1: Create campaign with performance data",
+      "Step 2: Send GET to /api/campaigns/:id/performance",
+      "Step 3: Verify 200 status response",
+      "Step 4: Check ROAS, CTR, CPC are returned",
+      "Step 5: Confirm data format is correct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Task creation via API endpoint works correctly",
+    "steps": [
+      "Step 1: Send POST to /api/tasks with task data",
+      "Step 2: Verify 201 status response",
+      "Step 3: Check task ID is returned",
+      "Step 4: Confirm task exists in database"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Task queue endpoint returns all pending tasks",
+    "steps": [
+      "Step 1: Create multiple tasks with different statuses",
+      "Step 2: Send GET to /api/tasks/queue",
+      "Step 3: Verify pending and in_progress tasks are returned",
+      "Step 4: Check completed tasks are excluded",
+      "Step 5: Confirm tasks are ordered by priority"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Task status update via API works correctly",
+    "steps": [
+      "Step 1: Create a pending task",
+      "Step 2: Send PUT to /api/tasks/:id with new status",
+      "Step 3: Verify 200 status response",
+      "Step 4: Check status change is persisted",
+      "Step 5: Confirm timestamps are updated"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Task start endpoint sets status to in_progress",
+    "steps": [
+      "Step 1: Create a pending task",
+      "Step 2: Send POST to /api/tasks/:id/start",
+      "Step 3: Verify 200 status response",
+      "Step 4: Check status is now 'in_progress'",
+      "Step 5: Confirm started_at timestamp is set"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Task complete endpoint sets status to completed",
+    "steps": [
+      "Step 1: Create an in_progress task",
+      "Step 2: Send POST to /api/tasks/:id/complete",
+      "Step 3: Verify 200 status response",
+      "Step 4: Check status is now 'completed'",
+      "Step 5: Confirm completed_at timestamp is set"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Task red-flag endpoint marks task for human review",
+    "steps": [
+      "Step 1: Create a task",
+      "Step 2: Send POST to /api/tasks/:id/red-flag with reason",
+      "Step 3: Verify 200 status response",
+      "Step 4: Check status is 'red_flagged'",
+      "Step 5: Confirm reason is saved"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Task queue visualization displays tasks in correct states",
+    "steps": [
+      "Step 1: Create tasks in different states",
+      "Step 2: Navigate to Tasks section",
+      "Step 3: Verify Kanban board or list view displays",
+      "Step 4: Check tasks are in correct columns/sections",
+      "Step 5: Confirm status badges are color-coded"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Task cards show assigned agent and priority",
+    "steps": [
+      "Step 1: Create tasks with agent assignments",
+      "Step 2: Navigate to task queue",
+      "Step 3: Verify task cards display",
+      "Step 4: Check agent avatar/name is visible",
+      "Step 5: Confirm priority indicator is shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Task detail modal shows complete task information",
+    "steps": [
+      "Step 1: Click on a task card",
+      "Step 2: Verify detail modal opens",
+      "Step 3: Check all task data is displayed",
+      "Step 4: Confirm action buttons are present",
+      "Step 5: Verify can close modal"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Task SSE stream provides real-time updates",
+    "steps": [
+      "Step 1: Connect to /api/tasks/stream endpoint",
+      "Step 2: Start a new task",
+      "Step 3: Verify SSE events are received",
+      "Step 4: Check events contain task status updates",
+      "Step 5: Confirm connection stays open"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent execution creates record in database",
+    "steps": [
+      "Step 1: Execute an agent via API",
+      "Step 2: Check agent_executions table",
+      "Step 3: Verify record exists with correct task_id",
+      "Step 4: Confirm agent_type is recorded",
+      "Step 5: Check timestamps are set"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent execution records input and output data",
+    "steps": [
+      "Step 1: Execute agent with specific input",
+      "Step 2: Wait for completion",
+      "Step 3: Check agent_executions record",
+      "Step 4: Verify input_data JSON is saved",
+      "Step 5: Confirm output_data JSON is saved"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent execution tracks token usage",
+    "steps": [
+      "Step 1: Execute an agent",
+      "Step 2: Wait for completion",
+      "Step 3: Check agent_executions record",
+      "Step 4: Verify tokens_used is recorded",
+      "Step 5: Confirm execution_time_ms is recorded"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent status endpoint returns current agent activity",
+    "steps": [
+      "Step 1: Start multiple agent executions",
+      "Step 2: Send GET to /api/agents/status",
+      "Step 3: Verify 200 status response",
+      "Step 4: Check active agents are listed",
+      "Step 5: Confirm status for each agent"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent activity feed displays recent agent actions",
+    "steps": [
+      "Step 1: Execute several agent tasks",
+      "Step 2: Send GET to /api/agents/activity-feed",
+      "Step 3: Verify activities are returned",
+      "Step 4: Check activities are in chronological order",
+      "Step 5: Confirm agent types and actions are shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Voting session creation works correctly",
+    "steps": [
+      "Step 1: Send POST to /api/agents/vote with options",
+      "Step 2: Verify 201 status response",
+      "Step 3: Check voting session ID is returned",
+      "Step 4: Confirm session exists in database",
+      "Step 5: Verify options are stored correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Voting session executes with multiple agent votes",
+    "steps": [
+      "Step 1: Create voting session with 3 options",
+      "Step 2: Simulate multiple agent votes",
+      "Step 3: Verify votes are recorded",
+      "Step 4: Check winner determination logic",
+      "Step 5: Confirm entropy score is calculated"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Voting session identifies high entropy and red-flags",
+    "steps": [
+      "Step 1: Create voting session",
+      "Step 2: Simulate evenly split votes (high entropy)",
+      "Step 3: Verify is_red_flagged is set to true",
+      "Step 4: Check red_flag_reason is populated",
+      "Step 5: Confirm session requires human resolution"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Voting session resolution by user works correctly",
+    "steps": [
+      "Step 1: Create red-flagged voting session",
+      "Step 2: Send POST to /api/agents/voting-sessions/:id/resolve",
+      "Step 3: Provide user resolution",
+      "Step 4: Verify session is marked resolved",
+      "Step 5: Confirm resolution is recorded"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Voting interface displays options for user review",
+    "steps": [
+      "Step 1: Create voting session with red flag",
+      "Step 2: Navigate to voting sessions view",
+      "Step 3: Verify session displays in UI",
+      "Step 4: Check all options are visible",
+      "Step 5: Confirm can select winner"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Congress voting visualization shows agent consensus",
+    "steps": [
+      "Step 1: Navigate to Agent Congress section",
+      "Step 2: View active voting session",
+      "Step 3: Verify vote distribution is visualized",
+      "Step 4: Check agent votes are attributed",
+      "Step 5: Confirm winner is highlighted"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Creative asset generation via API creates assets",
+    "steps": [
+      "Step 1: Send POST to /api/creative/generate with brief",
+      "Step 2: Verify 201 status response",
+      "Step 3: Check asset IDs are returned",
+      "Step 4: Confirm assets exist in database",
+      "Step 5: Verify content is generated"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Creative asset generation supports multiple formats",
+    "steps": [
+      "Step 1: Request creative generation for 1:1 format",
+      "Step 2: Verify asset is created with format 1_1",
+      "Step 3: Request generation for 4:5, 9:16, 1.91:1",
+      "Step 4: Check each format is handled correctly",
+      "Step 5: Confirm format-specific content"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Creative asset types include all required variants",
+    "steps": [
+      "Step 1: Generate headline creative",
+      "Step 2: Generate body copy creative",
+      "Step 3: Generate image brief",
+      "Step 4: Generate video script",
+      "Step 5: Verify all types are supported"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Creative iteration generates new versions",
+    "steps": [
+      "Step 1: Create initial creative asset",
+      "Step 2: Send POST to /api/creative/:id/iterate",
+      "Step 3: Verify new version is created",
+      "Step 4: Check version number increments",
+      "Step 5: Confirm original is preserved"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Creative assets list endpoint returns all assets",
+    "steps": [
+      "Step 1: Create multiple creative assets",
+      "Step 2: Send GET to /api/creative/assets",
+      "Step 3: Verify 200 status response",
+      "Step 4: Check all assets are returned",
+      "Step 5: Confirm filtering by campaign works"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Creative templates endpoint provides starter templates",
+    "steps": [
+      "Step 1: Send GET to /api/creative/templates",
+      "Step 2: Verify 200 status response",
+      "Step 3: Check templates are returned",
+      "Step 4: Confirm templates include structure",
+      "Step 5: Verify templates can be used for generation"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Video script generation includes hook, body, CTA structure",
+    "steps": [
+      "Step 1: Request video script generation",
+      "Step 2: Verify agent executes",
+      "Step 3: Check output includes hook section",
+      "Step 4: Confirm body content is present",
+      "Step 5: Verify CTA section is included"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Landing page copy generation creates complete page content",
+    "steps": [
+      "Step 1: Request landing page copy generation",
+      "Step 2: Verify agent executes with campaign context",
+      "Step 3: Check headline is generated",
+      "Step 4: Confirm body sections are created",
+      "Step 5: Verify CTA copy is included"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Email sequence builder creates welcome email",
+    "steps": [
+      "Step 1: Navigate to email sequence builder",
+      "Step 2: Select welcome email type",
+      "Step 3: Generate email content",
+      "Step 4: Verify subject line is created",
+      "Step 5: Confirm email body is complete"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Email sequence builder creates abandoned cart email",
+    "steps": [
+      "Step 1: Navigate to email sequence builder",
+      "Step 2: Select abandoned cart type",
+      "Step 3: Generate email content",
+      "Step 4: Verify urgency elements are included",
+      "Step 5: Confirm product reminder is present"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Email sequence builder creates post-purchase email",
+    "steps": [
+      "Step 1: Navigate to email sequence builder",
+      "Step 2: Select post-purchase type",
+      "Step 3: Generate email content",
+      "Step 4: Verify thank you message is included",
+      "Step 5: Confirm next steps are outlined"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Market intel scraping from Meta Ad Library works",
+    "steps": [
+      "Step 1: Send POST to /api/intel/scrape with competitor name",
+      "Step 2: Verify agent executes scraping",
+      "Step 3: Check ads are retrieved",
+      "Step 4: Confirm data is saved to market_intel table",
+      "Step 5: Verify creative URLs are captured"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Market intel extracts hooks from competitor ads",
+    "steps": [
+      "Step 1: Scrape competitor ads",
+      "Step 2: Verify hook extraction agent runs",
+      "Step 3: Check extracted_hook field is populated",
+      "Step 4: Confirm hooks are meaningful",
+      "Step 5: Verify multiple hooks are captured"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Market intel identifies winning creative patterns",
+    "steps": [
+      "Step 1: Collect market intel data",
+      "Step 2: Send GET to /api/intel/trends",
+      "Step 3: Verify pattern analysis runs",
+      "Step 4: Check patterns are identified",
+      "Step 5: Confirm trends are actionable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Market intel report generation creates comprehensive report",
+    "steps": [
+      "Step 1: Collect intel data for client",
+      "Step 2: Send GET to /api/intel/:clientId/report",
+      "Step 3: Verify report is generated",
+      "Step 4: Check all sections are included",
+      "Step 5: Confirm insights are valuable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Competitor monitoring dashboard displays intel data",
+    "steps": [
+      "Step 1: Navigate to Intel section",
+      "Step 2: Verify competitor cards display",
+      "Step 3: Check recent ads are shown",
+      "Step 4: Confirm creative previews work",
+      "Step 5: Verify trends are visualized"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Performance data ingestion endpoint accepts metrics",
+    "steps": [
+      "Step 1: Send POST to /api/performance/:campaignId with metrics",
+      "Step 2: Verify 200 status response",
+      "Step 3: Check data is saved to performance_memory",
+      "Step 4: Confirm ROAS, CTR, CPC are recorded",
+      "Step 5: Verify timestamps are correct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Performance endpoint returns campaign metrics",
+    "steps": [
+      "Step 1: Add performance data for campaign",
+      "Step 2: Send GET to /api/performance/:campaignId",
+      "Step 3: Verify 200 status response",
+      "Step 4: Check all metrics are returned",
+      "Step 5: Confirm data format is correct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Daily performance endpoint returns time-series data",
+    "steps": [
+      "Step 1: Add daily performance data",
+      "Step 2: Send GET to /api/performance/:campaignId/daily",
+      "Step 3: Verify data is grouped by day",
+      "Step 4: Check chronological order",
+      "Step 5: Confirm all metrics per day"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Winners endpoint identifies top performers",
+    "steps": [
+      "Step 1: Add performance data with varying ROAS",
+      "Step 2: Send GET to /api/performance/winners",
+      "Step 3: Verify top 10-20% are returned",
+      "Step 4: Check sorting by performance",
+      "Step 5: Confirm winner criteria is correct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Losers endpoint identifies underperformers",
+    "steps": [
+      "Step 1: Add performance data including poor performers",
+      "Step 2: Send GET to /api/performance/losers",
+      "Step 3: Verify underperformers are identified",
+      "Step 4: Check threshold logic",
+      "Step 5: Confirm recommendations are included"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Performance memory learning stores best practices",
+    "steps": [
+      "Step 1: Identify winning creative elements",
+      "Step 2: Send POST to /api/performance/learn",
+      "Step 3: Verify learning is stored",
+      "Step 4: Check is_best_practice flag is set",
+      "Step 5: Confirm notes are saved"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Performance memory retrieval filters by element type",
+    "steps": [
+      "Step 1: Store various performance memories",
+      "Step 2: Send GET to /api/performance/memory?type=hook",
+      "Step 3: Verify only hook learnings are returned",
+      "Step 4: Test with other types (angle, offer)",
+      "Step 5: Confirm filtering works correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Creative fatigue detection identifies declining CTR",
+    "steps": [
+      "Step 1: Add performance data showing CTR decline",
+      "Step 2: Run fatigue detection analysis",
+      "Step 3: Verify declining creatives are flagged",
+      "Step 4: Check frequency metrics are considered",
+      "Step 5: Confirm refresh recommendations"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Campaign optimization endpoint generates recommendations",
+    "steps": [
+      "Step 1: Add performance data for campaign",
+      "Step 2: Send POST to /api/campaigns/:id/optimize",
+      "Step 3: Verify analysis runs",
+      "Step 4: Check recommendations are generated",
+      "Step 5: Confirm recommendations are actionable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "SOP creation via API works correctly",
+    "steps": [
+      "Step 1: Send POST to /api/sops with SOP data",
+      "Step 2: Verify 201 status response",
+      "Step 3: Check SOP ID is returned",
+      "Step 4: Confirm SOP exists in database",
+      "Step 5: Verify steps array is saved"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "SOP retrieval endpoint returns all SOPs",
+    "steps": [
+      "Step 1: Create multiple SOPs",
+      "Step 2: Send GET to /api/sops",
+      "Step 3: Verify 200 status response",
+      "Step 4: Check all SOPs are returned",
+      "Step 5: Confirm filtering by category works"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "SOP update endpoint modifies existing SOP",
+    "steps": [
+      "Step 1: Create a test SOP",
+      "Step 2: Send PUT to /api/sops/:id with changes",
+      "Step 3: Verify 200 status response",
+      "Step 4: Check version number increments",
+      "Step 5: Confirm changes are persisted"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "SOP execution endpoint runs SOP steps",
+    "steps": [
+      "Step 1: Create SOP with defined steps",
+      "Step 2: Send POST to /api/sops/:id/execute",
+      "Step 3: Verify execution starts",
+      "Step 4: Check progress is tracked",
+      "Step 5: Confirm completion is recorded"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "SOP visual editor displays step-by-step flow",
+    "steps": [
+      "Step 1: Open SOP editor",
+      "Step 2: Create new SOP",
+      "Step 3: Add multiple steps",
+      "Step 4: Verify visual flow displays",
+      "Step 5: Confirm can reorder steps"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "SOP templates are available for common tasks",
+    "steps": [
+      "Step 1: Open SOP creation",
+      "Step 2: Select from templates",
+      "Step 3: Verify templates are listed",
+      "Step 4: Choose a template",
+      "Step 5: Confirm SOP is pre-populated"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Constitution rule creation via API works",
+    "steps": [
+      "Step 1: Send POST to /api/constitution with rule data",
+      "Step 2: Verify 201 status response",
+      "Step 3: Check rule ID is returned",
+      "Step 4: Confirm rule exists in database",
+      "Step 5: Verify rule is active"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Constitution rules can be global or client-specific",
+    "steps": [
+      "Step 1: Create global rule (client_id null)",
+      "Step 2: Create client-specific rule",
+      "Step 3: Verify both are stored correctly",
+      "Step 4: Check client rule overrides global",
+      "Step 5: Confirm scoping logic works"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Constitution rule severity levels work correctly",
+    "steps": [
+      "Step 1: Create warning severity rule",
+      "Step 2: Create block severity rule",
+      "Step 3: Test rule enforcement",
+      "Step 4: Verify warning allows with notice",
+      "Step 5: Confirm block prevents action"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Constitution rule types support all categories",
+    "steps": [
+      "Step 1: Create meta_policy rule",
+      "Step 2: Create quality_standard rule",
+      "Step 3: Create brand_guideline rule",
+      "Step 4: Verify all types are supported",
+      "Step 5: Confirm proper categorization"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Report generation for weekly summary works",
+    "steps": [
+      "Step 1: Add week of performance data",
+      "Step 2: Send GET to /api/reports/:clientId/weekly",
+      "Step 3: Verify report is generated",
+      "Step 4: Check all metrics are included",
+      "Step 5: Confirm week range is correct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Report generation for monthly deep-dive works",
+    "steps": [
+      "Step 1: Add month of data",
+      "Step 2: Send GET to /api/reports/:clientId/monthly",
+      "Step 3: Verify comprehensive report generated",
+      "Step 4: Check insights and analysis included",
+      "Step 5: Confirm month range is correct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Custom report generation allows parameter specification",
+    "steps": [
+      "Step 1: Send POST to /api/reports/generate with params",
+      "Step 2: Specify date range and metrics",
+      "Step 3: Verify custom report is created",
+      "Step 4: Check only requested data included",
+      "Step 5: Confirm format is correct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Report scheduling creates automated reports",
+    "steps": [
+      "Step 1: Configure weekly report schedule",
+      "Step 2: Send GET to /api/reports/scheduled",
+      "Step 3: Verify schedule is saved",
+      "Step 4: Check schedule parameters",
+      "Step 5: Confirm can modify schedule"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Report export to PDF format works",
+    "steps": [
+      "Step 1: Generate a report",
+      "Step 2: Request PDF export",
+      "Step 3: Verify PDF is created",
+      "Step 4: Check PDF contains all data",
+      "Step 5: Confirm formatting is correct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Report export to CSV format works",
+    "steps": [
+      "Step 1: Generate a report",
+      "Step 2: Request CSV export",
+      "Step 3: Verify CSV file is created",
+      "Step 4: Check CSV contains all metrics",
+      "Step 5: Confirm proper CSV formatting"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Git commit history endpoint returns all commits",
+    "steps": [
+      "Step 1: Make several git commits",
+      "Step 2: Send GET to /api/git/commits",
+      "Step 3: Verify 200 status response",
+      "Step 4: Check commits are in reverse chronological order",
+      "Step 5: Confirm commit data is complete"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Git commit detail endpoint returns specific commit",
+    "steps": [
+      "Step 1: Make a git commit",
+      "Step 2: Send GET to /api/git/commits/:sha",
+      "Step 3: Verify commit details are returned",
+      "Step 4: Check message, author, timestamp",
+      "Step 5: Confirm files changed are listed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Git diff endpoint shows changes for commit",
+    "steps": [
+      "Step 1: Make a commit with file changes",
+      "Step 2: Send GET to /api/git/diff/:sha",
+      "Step 3: Verify diff is returned",
+      "Step 4: Check additions and deletions shown",
+      "Step 5: Confirm diff format is correct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Git rollback endpoint reverts to previous state",
+    "steps": [
+      "Step 1: Make multiple commits",
+      "Step 2: Send POST to /api/git/rollback/:sha",
+      "Step 3: Verify rollback executes",
+      "Step 4: Check state matches target commit",
+      "Step 5: Confirm rollback is recorded"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Settings retrieval endpoint returns user settings",
+    "steps": [
+      "Step 1: Send GET to /api/settings",
+      "Step 2: Verify 200 status response",
+      "Step 3: Check all settings are returned",
+      "Step 4: Confirm theme, preferences included",
+      "Step 5: Verify format is correct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Settings update endpoint persists changes",
+    "steps": [
+      "Step 1: Send PUT to /api/settings with changes",
+      "Step 2: Verify 200 status response",
+      "Step 3: Check settings are updated",
+      "Step 4: Retrieve settings again",
+      "Step 5: Confirm changes persisted"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "API keys management endpoint stores keys securely",
+    "steps": [
+      "Step 1: Send PUT to /api/settings/api-keys",
+      "Step 2: Provide API keys",
+      "Step 3: Verify keys are stored",
+      "Step 4: Check encryption is applied",
+      "Step 5: Confirm retrieval works"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Integration settings for platforms can be configured",
+    "steps": [
+      "Step 1: Send PUT to /api/settings/integrations",
+      "Step 2: Configure Meta, Google integrations",
+      "Step 3: Verify settings are saved",
+      "Step 4: Check connection can be tested",
+      "Step 5: Confirm settings persist"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Usage tracking records token consumption",
+    "steps": [
+      "Step 1: Execute agent operations",
+      "Step 2: Check usage_tracking table",
+      "Step 3: Verify records are created",
+      "Step 4: Check input/output tokens recorded",
+      "Step 5: Confirm cost estimates calculated"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Usage tracking aggregates by user",
+    "steps": [
+      "Step 1: Execute operations for different users",
+      "Step 2: Query usage by user_id",
+      "Step 3: Verify aggregation works",
+      "Step 4: Check totals are correct",
+      "Step 5: Confirm time ranges work"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Conversation history is saved and retrievable",
+    "steps": [
+      "Step 1: Have conversation with Super Agent",
+      "Step 2: Check conversations table",
+      "Step 3: Verify messages are saved",
+      "Step 4: Check context is preserved",
+      "Step 5: Confirm can retrieve history"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Conversation context switching works correctly",
+    "steps": [
+      "Step 1: Start general conversation",
+      "Step 2: Switch to client-specific context",
+      "Step 3: Verify context change is reflected",
+      "Step 4: Check agent uses client data",
+      "Step 5: Confirm context persists"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Super Agent command palette opens with keyboard shortcut",
+    "steps": [
+      "Step 1: Press Cmd/Ctrl+K",
+      "Step 2: Verify command palette opens",
+      "Step 3: Check all commands listed",
+      "Step 4: Type to filter commands",
+      "Step 5: Confirm selection executes command"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Super Agent voice input toggle activates speech recognition",
+    "steps": [
+      "Step 1: Click voice input button",
+      "Step 2: Verify microphone permission requested",
+      "Step 3: Speak a command",
+      "Step 4: Check speech is transcribed",
+      "Step 5: Confirm command executes"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Super Agent confirmation dialog shows for critical actions",
+    "steps": [
+      "Step 1: Ask agent to delete a campaign",
+      "Step 2: Verify confirmation dialog appears",
+      "Step 3: Check action is described clearly",
+      "Step 4: Cancel and verify no action",
+      "Step 5: Confirm and verify action executes"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Super Agent can explain functions before executing",
+    "steps": [
+      "Step 1: Ask 'Explain how to create a campaign'",
+      "Step 2: Verify agent explains steps",
+      "Step 3: Ask 'Now do it'",
+      "Step 4: Check agent executes after explanation",
+      "Step 5: Confirm two-step process works"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Super Agent task decomposition breaks complex requests into subtasks",
+    "steps": [
+      "Step 1: Ask for complex multi-step operation",
+      "Step 2: Verify agent shows task breakdown",
+      "Step 3: Check all subtasks are listed",
+      "Step 4: Confirm order makes sense",
+      "Step 5: Verify can approve or modify"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Super Agent MAKER framework executes with voting",
+    "steps": [
+      "Step 1: Request operation requiring multiple approaches",
+      "Step 2: Verify multiple agents generate options",
+      "Step 3: Check voting process executes",
+      "Step 4: Confirm winner is selected",
+      "Step 5: Verify result is returned"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Red-flag resolution modal displays when high entropy detected",
+    "steps": [
+      "Step 1: Trigger voting with split decision",
+      "Step 2: Verify red-flag modal opens",
+      "Step 3: Check all options are presented",
+      "Step 4: Review voting breakdown",
+      "Step 5: Confirm user can resolve"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Notification center displays system alerts",
+    "steps": [
+      "Step 1: Generate red-flag event",
+      "Step 2: Open notification center",
+      "Step 3: Verify alert appears",
+      "Step 4: Check notification is actionable",
+      "Step 5: Confirm can dismiss notification"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Real-time task queue updates without page refresh",
+    "steps": [
+      "Step 1: Open task queue view",
+      "Step 2: Create new task via API",
+      "Step 3: Verify task appears automatically",
+      "Step 4: Update task status",
+      "Step 5: Confirm UI updates in real-time"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent activity feed updates in real-time",
+    "steps": [
+      "Step 1: Open agent activity feed",
+      "Step 2: Start agent execution",
+      "Step 3: Verify activity appears immediately",
+      "Step 4: Check updates stream as agent works",
+      "Step 5: Confirm completion is shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Three-column layout displays correctly on desktop",
+    "steps": [
+      "Step 1: Open application on desktop browser (1920x1080)",
+      "Step 2: Take screenshot",
+      "Step 3: Verify sidebar, main content, agent panel visible",
+      "Step 4: Check proportions are correct",
+      "Step 5: Confirm all content is accessible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Two-column layout displays correctly on tablet",
+    "steps": [
+      "Step 1: Resize browser to tablet width (768px)",
+      "Step 2: Take screenshot",
+      "Step 3: Verify sidebar and main content visible",
+      "Step 4: Check agent panel is accessible via button",
+      "Step 5: Confirm layout is usable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Single-column layout displays correctly on mobile",
+    "steps": [
+      "Step 1: Resize browser to mobile width (375px)",
+      "Step 2: Take screenshot",
+      "Step 3: Verify main content fills screen",
+      "Step 4: Check sidebar is accessible via menu",
+      "Step 5: Confirm touch-optimized interface"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Metric cards display with proper styling and gradients",
+    "steps": [
+      "Step 1: Navigate to dashboard",
+      "Step 2: Take screenshot of metric cards",
+      "Step 3: Verify subtle background gradients",
+      "Step 4: Check large number display formatting",
+      "Step 5: Confirm trend indicators are visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Status badges use correct colors for each state",
+    "steps": [
+      "Step 1: Create items with all status types",
+      "Step 2: Take screenshot",
+      "Step 3: Verify pending badges are gray",
+      "Step 4: Check in_progress badges are blue",
+      "Step 5: Confirm completed are green, red_flagged are red"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Agent avatars are distinct and visually appealing",
+    "steps": [
+      "Step 1: View agent congress or activity feed",
+      "Step 2: Take screenshot",
+      "Step 3: Verify each agent type has unique icon",
+      "Step 4: Check colors are consistent",
+      "Step 5: Confirm activity status indicators work"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Buttons have appropriate hover states",
+    "steps": [
+      "Step 1: Hover over primary button",
+      "Step 2: Verify visual feedback (brightness, scale)",
+      "Step 3: Hover over secondary button",
+      "Step 4: Check hover fill works",
+      "Step 5: Confirm disabled buttons have no hover"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Input fields show focus rings correctly",
+    "steps": [
+      "Step 1: Click into text input",
+      "Step 2: Verify focus ring appears",
+      "Step 3: Check focus ring color matches design",
+      "Step 4: Tab to next field",
+      "Step 5: Confirm focus ring moves appropriately"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Animations are smooth and respect reduced motion preference",
+    "steps": [
+      "Step 1: Enable reduced motion in OS settings",
+      "Step 2: Navigate application",
+      "Step 3: Verify animations are disabled/reduced",
+      "Step 4: Disable reduced motion",
+      "Step 5: Confirm animations are smooth (150-300ms)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Loading states show skeleton loaders",
+    "steps": [
+      "Step 1: Navigate to page with data loading",
+      "Step 2: Take screenshot during load",
+      "Step 3: Verify skeleton loaders appear",
+      "Step 4: Check skeletons match content shape",
+      "Step 5: Confirm smooth transition to real content"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Progress bars display for long-running operations",
+    "steps": [
+      "Step 1: Start long-running agent task",
+      "Step 2: Verify progress bar appears",
+      "Step 3: Check progress updates incrementally",
+      "Step 4: Confirm completion shows 100%",
+      "Step 5: Verify bar styling matches design"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Modal overlays have proper backdrop and positioning",
+    "steps": [
+      "Step 1: Open any modal",
+      "Step 2: Take screenshot",
+      "Step 3: Verify dark backdrop covers page",
+      "Step 4: Check modal is centered",
+      "Step 5: Confirm can close with backdrop click or ESC"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Sidebar resize handle works smoothly",
+    "steps": [
+      "Step 1: Locate resize handle on sidebar",
+      "Step 2: Click and drag handle",
+      "Step 3: Verify sidebar width changes smoothly",
+      "Step 4: Release at desired width",
+      "Step 5: Confirm width persists on reload"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Scrollbars are styled consistently with theme",
+    "steps": [
+      "Step 1: Navigate to scrollable content",
+      "Step 2: Verify scrollbar styling",
+      "Step 3: Check scrollbar matches light/dark theme",
+      "Step 4: Confirm hover states work",
+      "Step 5: Verify smooth scrolling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Keyboard navigation works throughout application",
+    "steps": [
+      "Step 1: Start from sidebar",
+      "Step 2: Tab through all interactive elements",
+      "Step 3: Verify focus moves logically",
+      "Step 4: Check can activate with Enter/Space",
+      "Step 5: Confirm no keyboard traps"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Screen reader announces key information correctly",
+    "steps": [
+      "Step 1: Enable screen reader (VoiceOver, NVDA, etc.)",
+      "Step 2: Navigate through dashboard",
+      "Step 3: Verify landmarks are announced",
+      "Step 4: Check form labels are read",
+      "Step 5: Confirm button purposes are clear"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "ARIA labels are present on interactive elements",
+    "steps": [
+      "Step 1: Inspect icon-only buttons",
+      "Step 2: Verify aria-label attributes exist",
+      "Step 3: Check complex widgets have aria roles",
+      "Step 4: Confirm live regions for dynamic updates",
+      "Step 5: Verify aria-describedby for help text"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "High contrast mode maintains readability",
+    "steps": [
+      "Step 1: Enable high contrast mode in OS",
+      "Step 2: Open application",
+      "Step 3: Verify all text is readable",
+      "Step 4: Check borders and separators are visible",
+      "Step 5: Confirm interactive elements are distinguishable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Focus management works in modals",
+    "steps": [
+      "Step 1: Open a modal dialog",
+      "Step 2: Verify focus moves into modal",
+      "Step 3: Tab through modal elements",
+      "Step 4: Confirm focus stays trapped in modal",
+      "Step 5: Close modal, verify focus returns to trigger"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Error messages are accessible and clear",
+    "steps": [
+      "Step 1: Trigger validation error",
+      "Step 2: Verify error message appears",
+      "Step 3: Check error is announced to screen reader",
+      "Step 4: Confirm error is associated with field",
+      "Step 5: Verify color is not only indicator"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Touch targets are appropriately sized for mobile",
+    "steps": [
+      "Step 1: Open application on mobile",
+      "Step 2: Attempt to tap small buttons",
+      "Step 3: Verify all targets are at least 44x44px",
+      "Step 4: Check spacing prevents mis-taps",
+      "Step 5: Confirm comfortable interaction"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Swipe gestures work for navigation on mobile",
+    "steps": [
+      "Step 1: Open application on mobile device",
+      "Step 2: Swipe right to open sidebar",
+      "Step 3: Verify sidebar slides in",
+      "Step 4: Swipe left to close sidebar",
+      "Step 5: Confirm gesture is smooth"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Progressive Web App can be installed",
+    "steps": [
+      "Step 1: Open application in supported browser",
+      "Step 2: Look for install prompt",
+      "Step 3: Click install",
+      "Step 4: Verify app installs to home screen",
+      "Step 5: Confirm opens in standalone mode"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "PWA works offline with cached resources",
+    "steps": [
+      "Step 1: Install PWA",
+      "Step 2: Load application while online",
+      "Step 3: Go offline (airplane mode)",
+      "Step 4: Open PWA",
+      "Step 5: Verify basic functionality works"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Global search functionality finds relevant content",
+    "steps": [
+      "Step 1: Click global search in header",
+      "Step 2: Type search query",
+      "Step 3: Verify results appear",
+      "Step 4: Check clients, campaigns, tasks are searched",
+      "Step 5: Confirm clicking result navigates correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Calendar view displays campaign schedules",
+    "steps": [
+      "Step 1: Navigate to calendar view",
+      "Step 2: Verify calendar grid displays",
+      "Step 3: Check campaigns appear on scheduled dates",
+      "Step 4: Confirm can navigate months",
+      "Step 5: Verify clicking campaign opens detail"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Quick action buttons in header execute common operations",
+    "steps": [
+      "Step 1: Locate quick action buttons",
+      "Step 2: Click 'New Campaign'",
+      "Step 3: Verify wizard opens",
+      "Step 4: Click 'New Client'",
+      "Step 5: Confirm onboarding wizard opens"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "User profile menu shows account options",
+    "steps": [
+      "Step 1: Click user profile avatar",
+      "Step 2: Verify menu dropdown appears",
+      "Step 3: Check options: Settings, Logout, etc.",
+      "Step 4: Click Settings",
+      "Step 5: Confirm settings page opens"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Logout functionality clears session correctly",
+    "steps": [
+      "Step 1: Login to application",
+      "Step 2: Click logout from profile menu",
+      "Step 3: Verify redirects to login page",
+      "Step 4: Check session is cleared",
+      "Step 5: Confirm cannot access protected routes"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Funnel mapping visual editor allows drag-and-drop",
+    "steps": [
+      "Step 1: Open funnel mapping editor in campaign wizard",
+      "Step 2: Verify visual canvas displays",
+      "Step 3: Drag 'Ad' element to canvas",
+      "Step 4: Connect to 'Landing Page' element",
+      "Step 5: Confirm funnel flow is saved"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "A/B test configuration allows variant creation",
+    "steps": [
+      "Step 1: Navigate to A/B test setup",
+      "Step 2: Click 'Create Variant'",
+      "Step 3: Configure variant A",
+      "Step 4: Configure variant B",
+      "Step 5: Verify both variants are saved"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "A/B test results analysis shows winner",
+    "steps": [
+      "Step 1: Run A/B test with performance data",
+      "Step 2: Navigate to test results",
+      "Step 3: Verify statistical analysis is shown",
+      "Step 4: Check confidence level is displayed",
+      "Step 5: Confirm winner is highlighted"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Pixel installation code generator creates tracking code",
+    "steps": [
+      "Step 1: Navigate to technical setup",
+      "Step 2: Select 'Generate Pixel Code'",
+      "Step 3: Choose Meta Pixel",
+      "Step 4: Verify code is generated",
+      "Step 5: Confirm can copy code"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "UTM parameter builder creates campaign URLs",
+    "steps": [
+      "Step 1: Open UTM builder tool",
+      "Step 2: Enter base URL",
+      "Step 3: Fill campaign parameters",
+      "Step 4: Verify UTM URL is generated",
+      "Step 5: Confirm can copy URL"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Launch checklist validation prevents incomplete launches",
+    "steps": [
+      "Step 1: Attempt to launch campaign with missing items",
+      "Step 2: Verify checklist appears",
+      "Step 3: Check incomplete items are highlighted",
+      "Step 4: Confirm launch is blocked",
+      "Step 5: Complete all items and verify launch allowed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Audience creation tool for Lookalike audiences",
+    "steps": [
+      "Step 1: Open audience builder",
+      "Step 2: Select 'Lookalike' type",
+      "Step 3: Choose source audience",
+      "Step 4: Configure similarity percentage",
+      "Step 5: Verify audience configuration is saved"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Audience creation tool for Custom audiences",
+    "steps": [
+      "Step 1: Open audience builder",
+      "Step 2: Select 'Custom' type",
+      "Step 3: Upload customer list or configure pixel event",
+      "Step 4: Set audience parameters",
+      "Step 5: Confirm audience is created"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Audience creation tool for Interest-based audiences",
+    "steps": [
+      "Step 1: Open audience builder",
+      "Step 2: Select 'Interest' type",
+      "Step 3: Add interests and demographics",
+      "Step 4: Configure location and age range",
+      "Step 5: Verify audience targeting is saved"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Automated rules configuration sets performance thresholds",
+    "steps": [
+      "Step 1: Navigate to automated rules",
+      "Step 2: Create new rule",
+      "Step 3: Set condition (e.g., ROAS < 2.0)",
+      "Step 4: Set action (e.g., pause ad)",
+      "Step 5: Confirm rule is active"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Campaign structure builder creates hierarchy",
+    "steps": [
+      "Step 1: Open campaign structure tool",
+      "Step 2: Create campaign level",
+      "Step 3: Add ad sets under campaign",
+      "Step 4: Add ads under ad sets",
+      "Step 5: Verify hierarchy is correctly structured"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Export client data package creates complete backup",
+    "steps": [
+      "Step 1: Navigate to client detail",
+      "Step 2: Click 'Export Data'",
+      "Step 3: Verify export process starts",
+      "Step 4: Check all client data is included",
+      "Step 5: Confirm download completes"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Meeting agenda generator creates structured agendas",
+    "steps": [
+      "Step 1: Navigate to reporting section",
+      "Step 2: Click 'Generate Meeting Agenda'",
+      "Step 3: Select client and date range",
+      "Step 4: Verify agenda is created with talking points",
+      "Step 5: Confirm can edit and save"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Font size adjustment in settings works correctly",
+    "steps": [
+      "Step 1: Open settings",
+      "Step 2: Navigate to display preferences",
+      "Step 3: Adjust font size slider",
+      "Step 4: Verify text size changes",
+      "Step 5: Confirm change persists on reload"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Density adjustment changes UI spacing",
+    "steps": [
+      "Step 1: Open settings",
+      "Step 2: Select 'Compact' density",
+      "Step 3: Verify UI spacing reduces",
+      "Step 4: Select 'Comfortable' density",
+      "Step 5: Confirm spacing increases"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Notification preferences can be customized",
+    "steps": [
+      "Step 1: Open notification settings",
+      "Step 2: Toggle various notification types",
+      "Step 3: Verify preferences are saved",
+      "Step 4: Trigger notification event",
+      "Step 5: Confirm respects preferences"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Keyboard shortcuts reference displays all shortcuts",
+    "steps": [
+      "Step 1: Press '?' or open shortcuts help",
+      "Step 2: Verify shortcuts modal displays",
+      "Step 3: Check all shortcuts are listed",
+      "Step 4: Confirm categorized logically",
+      "Step 5: Test a few shortcuts work"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Data backup option creates system backup",
+    "steps": [
+      "Step 1: Navigate to settings",
+      "Step 2: Click 'Backup Data'",
+      "Step 3: Verify backup process starts",
+      "Step 4: Check database and files are included",
+      "Step 5: Confirm backup file downloads"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Human-in-the-loop checkpoint configuration sets review points",
+    "steps": [
+      "Step 1: Open HITL settings",
+      "Step 2: Enable checkpoints for specific operations",
+      "Step 3: Set threshold for automatic execution",
+      "Step 4: Save configuration",
+      "Step 5: Verify checkpoints trigger correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Voting threshold adjustment changes consensus requirements",
+    "steps": [
+      "Step 1: Navigate to agent settings",
+      "Step 2: Adjust 'ahead-by-k' threshold",
+      "Step 3: Save new threshold (e.g., k=2)",
+      "Step 4: Run voting session",
+      "Step 5: Verify new threshold is applied"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Entropy monitoring displays decision quality metrics",
+    "steps": [
+      "Step 1: Navigate to agent congress analytics",
+      "Step 2: View entropy scores for sessions",
+      "Step 3: Verify scores are calculated correctly",
+      "Step 4: Check high entropy sessions are flagged",
+      "Step 5: Confirm trends over time are shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Custom agent configuration allows prompt customization",
+    "steps": [
+      "Step 1: Navigate to agent configuration",
+      "Step 2: Select agent type (e.g., Copywriter)",
+      "Step 3: Edit system prompt",
+      "Step 4: Save custom configuration",
+      "Step 5: Verify agent uses custom prompt"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent performance analytics track success rates",
+    "steps": [
+      "Step 1: Navigate to agent analytics",
+      "Step 2: View agent performance metrics",
+      "Step 3: Check success rate, avg execution time",
+      "Step 4: Verify quality scores are shown",
+      "Step 5: Confirm can filter by date range"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Scaling protocol recommendations based on performance",
+    "steps": [
+      "Step 1: Add strong performance data for campaign",
+      "Step 2: Request scaling recommendations",
+      "Step 3: Verify system analyzes data",
+      "Step 4: Check recommendations are specific",
+      "Step 5: Confirm actionable scaling steps"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Investment optimization suggestions maximize ROAS",
+    "steps": [
+      "Step 1: Input campaign budgets and performance",
+      "Step 2: Request optimization suggestions",
+      "Step 3: Verify analysis runs",
+      "Step 4: Check budget reallocation is suggested",
+      "Step 5: Confirm projected ROAS improvement"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "SOP auto-update mechanism learns from best practices",
+    "steps": [
+      "Step 1: Record successful campaign execution",
+      "Step 2: Mark as best practice",
+      "Step 3: Trigger SOP auto-update",
+      "Step 4: Verify SOP is updated with learnings",
+      "Step 5: Confirm version increment and audit log"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Client-specific SOP customization overrides global SOPs",
+    "steps": [
+      "Step 1: Create global SOP",
+      "Step 2: Create client-specific override",
+      "Step 3: Execute SOP for that client",
+      "Step 4: Verify client SOP is used",
+      "Step 5: Confirm global SOP used for other clients"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "SOP execution tracking records each step completion",
+    "steps": [
+      "Step 1: Execute SOP with multiple steps",
+      "Step 2: Monitor execution progress",
+      "Step 3: Verify each step completion is logged",
+      "Step 4: Check timestamps for each step",
+      "Step 5: Confirm full execution history is saved"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Trend detection alerts notify of market changes",
+    "steps": [
+      "Step 1: Configure trend detection thresholds",
+      "Step 2: Simulate trending topic in intel data",
+      "Step 3: Verify alert is generated",
+      "Step 4: Check notification appears",
+      "Step 5: Confirm trend details are accessible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Auto-generated iteration briefs based on winning patterns",
+    "steps": [
+      "Step 1: Identify winning creative elements",
+      "Step 2: Trigger iteration brief generation",
+      "Step 3: Verify brief includes winning patterns",
+      "Step 4: Check specific recommendations included",
+      "Step 5: Confirm brief is actionable for agents"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Competitor SWOT analysis generates for each competitor",
+    "steps": [
+      "Step 1: Add competitor to client",
+      "Step 2: Request competitor SWOT",
+      "Step 3: Verify agent analyzes competitor",
+      "Step 4: Check all SWOT quadrants populated",
+      "Step 5: Confirm insights are relevant"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Move client between projects functionality works",
+    "steps": [
+      "Step 1: Create multiple projects",
+      "Step 2: Select client to move",
+      "Step 3: Choose destination project",
+      "Step 4: Confirm move",
+      "Step 5: Verify client and all data moved correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Confetti animation plays on campaign launch",
+    "steps": [
+      "Step 1: Launch a campaign",
+      "Step 2: Verify confetti animation triggers",
+      "Step 3: Check animation is celebratory",
+      "Step 4: Confirm animation completes",
+      "Step 5: Verify doesn't interfere with UI"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Super Agent pause functionality stops running task",
+    "steps": [
+      "Step 1: Start long-running agent task",
+      "Step 2: Click pause button",
+      "Step 3: Verify task pauses",
+      "Step 4: Check state is preserved",
+      "Step 5: Confirm can resume task"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Super Agent resume functionality continues paused task",
+    "steps": [
+      "Step 1: Pause a running task",
+      "Step 2: Click resume button",
+      "Step 3: Verify task continues from pause point",
+      "Step 4: Check no data is lost",
+      "Step 5: Confirm task completes successfully"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Super Agent cancel functionality terminates task",
+    "steps": [
+      "Step 1: Start agent task",
+      "Step 2: Click cancel button",
+      "Step 3: Verify cancellation confirmation appears",
+      "Step 4: Confirm cancellation",
+      "Step 5: Check task is terminated and marked cancelled"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Super Agent context indicator shows current client/campaign",
+    "steps": [
+      "Step 1: Open Super Agent panel",
+      "Step 2: Verify context indicator is visible",
+      "Step 3: Select different client",
+      "Step 4: Check context updates in agent panel",
+      "Step 5: Confirm agent uses correct context"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Super Agent docking functionality toggles panel position",
+    "steps": [
+      "Step 1: Open floating Super Agent panel",
+      "Step 2: Click dock button",
+      "Step 3: Verify panel docks to right side",
+      "Step 4: Click undock button",
+      "Step 5: Confirm panel floats again"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Super Agent minimize/maximize works correctly",
+    "steps": [
+      "Step 1: Open Super Agent panel",
+      "Step 2: Click minimize button",
+      "Step 3: Verify panel minimizes to button",
+      "Step 4: Click to maximize",
+      "Step 5: Confirm panel restores with history intact"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Red-flag alert badge shows count in sidebar",
+    "steps": [
+      "Step 1: Create red-flagged voting session",
+      "Step 2: Check sidebar navigation",
+      "Step 3: Verify red badge appears with count",
+      "Step 4: Resolve red flag",
+      "Step 5: Confirm badge count decrements"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Active task indicators in sidebar show running tasks",
+    "steps": [
+      "Step 1: Start multiple tasks",
+      "Step 2: Check sidebar indicators",
+      "Step 3: Verify count shows active tasks",
+      "Step 4: Complete a task",
+      "Step 5: Confirm count updates"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Dashboard charts display performance trends correctly",
+    "steps": [
+      "Step 1: Navigate to dashboard",
+      "Step 2: View performance charts",
+      "Step 3: Verify data visualization is clear",
+      "Step 4: Check axes are labeled",
+      "Step 5: Confirm tooltips show on hover"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Agent activity feed has smooth scroll animation",
+    "steps": [
+      "Step 1: Open agent activity feed",
+      "Step 2: Add new activity",
+      "Step 3: Verify smooth scroll to new item",
+      "Step 4: Check animation timing is appropriate",
+      "Step 5: Confirm no jarring jumps"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Super Agent panel has slide-in animation",
+    "steps": [
+      "Step 1: Open Super Agent panel",
+      "Step 2: Observe opening animation",
+      "Step 3: Verify smooth slide from right/bottom",
+      "Step 4: Close panel",
+      "Step 5: Confirm smooth slide out animation"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Pulse animation on processing agents is visible and smooth",
+    "steps": [
+      "Step 1: Start agent execution",
+      "Step 2: View agent avatar",
+      "Step 3: Verify pulse animation is active",
+      "Step 4: Check animation is smooth",
+      "Step 5: Confirm stops when agent completes"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Complete end-to-end client onboarding to campaign launch flow",
+    "steps": [
+      "Step 1: Click 'New Client' and enter client details",
+      "Step 2: Upload brand assets and trigger brand absorption",
+      "Step 3: Review and approve extracted brand voice and ICP",
+      "Step 4: Click 'New Campaign' for the new client",
+      "Step 5: Complete campaign wizard with angle, offer, budget",
+      "Step 6: Generate creative assets via Congress voting",
+      "Step 7: Review and approve generated creatives",
+      "Step 8: Complete technical setup (pixel, audiences)",
+      "Step 9: Validate launch checklist",
+      "Step 10: Launch campaign and verify it goes live",
+      "Step 11: Check campaign appears in active campaigns list",
+      "Step 12: Verify all data is correctly saved and associated"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Complete end-to-end performance optimization workflow",
+    "steps": [
+      "Step 1: Launch campaign with multiple ad variations",
+      "Step 2: Ingest performance data for each ad",
+      "Step 3: Wait for automated performance analysis cycle",
+      "Step 4: Verify winners and losers are identified",
+      "Step 5: Check dashboard shows optimization recommendations",
+      "Step 6: Review creative fatigue detection for declining ads",
+      "Step 7: Accept scaling recommendations for winners",
+      "Step 8: Verify losers are auto-paused or flagged",
+      "Step 9: Trigger iteration brief generation for winners",
+      "Step 10: Generate new creative variations based on winners",
+      "Step 11: Confirm performance learnings saved to memory",
+      "Step 12: Verify entire cycle is logged with git commits"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Complete end-to-end market intelligence to creative iteration flow",
+    "steps": [
+      "Step 1: Navigate to market intel for a client",
+      "Step 2: Trigger Meta Ad Library scrape for competitors",
+      "Step 3: Wait for scraping to complete and ads to be imported",
+      "Step 4: View competitor ads in intel dashboard",
+      "Step 5: Trigger hook and pattern extraction",
+      "Step 6: Review extracted winning patterns and hooks",
+      "Step 7: Request trend analysis",
+      "Step 8: Generate iteration brief based on trends",
+      "Step 9: Navigate to campaign creative section",
+      "Step 10: Use iteration brief to generate new ad variations",
+      "Step 11: Review new variations inspired by market intel",
+      "Step 12: Approve and add to campaign"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Complete end-to-end Super Agent complex task execution with voting and red-flag",
+    "steps": [
+      "Step 1: Open Super Agent panel",
+      "Step 2: Ask 'Create a Black Friday campaign for [client] with email sequence'",
+      "Step 3: Review agent's task decomposition",
+      "Step 4: Approve the proposed task breakdown",
+      "Step 5: Watch real-time streaming of agent progress",
+      "Step 6: Observe multiple worker agents executing in parallel",
+      "Step 7: See Congress voting on creative angle options",
+      "Step 8: Voting results in high entropy, red-flag triggered",
+      "Step 9: Red-flag modal appears with all options",
+      "Step 10: Review voting breakdown and select winner manually",
+      "Step 11: Agent continues execution with user's selection",
+      "Step 12: Verify campaign, creatives, and email sequence are all created",
+      "Step 13: Check all artifacts are saved and accessible",
+      "Step 14: Confirm entire process is tracked in git history"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Complete end-to-end weekly reporting workflow",
+    "steps": [
+      "Step 1: Navigate to reporting section for a client",
+      "Step 2: Select date range for past week",
+      "Step 3: Click 'Generate Weekly Report'",
+      "Step 4: Verify agent analyzes all campaign data",
+      "Step 5: Check report includes performance metrics (ROAS, CTR, etc.)",
+      "Step 6: Verify insights and recommendations are included",
+      "Step 7: Review charts and visualizations in report",
+      "Step 8: Edit any sections if needed",
+      "Step 9: Export report to PDF",
+      "Step 10: Verify PDF formatting is professional",
+      "Step 11: Schedule automated weekly delivery",
+      "Step 12: Confirm schedule is saved and active"
+    ],
+    "passes": false
+  }
+]

@@ -1,0 +1,716 @@
+[
+  {
+    "category": "functional",
+    "description": "Agents menu item appears in sidebar navigation between Intel and Reports",
+    "steps": [
+      "Step 1: Load application and authenticate",
+      "Step 2: Check sidebar navigation items",
+      "Step 3: Verify 'Agents' menu item exists with robot/AI icon",
+      "Step 4: Confirm position is between Intel and Reports",
+      "Step 5: Click on Agents and verify navigation to /agents route"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agents hub page displays grid of available agent cards",
+    "steps": [
+      "Step 1: Navigate to /agents",
+      "Step 2: Verify page title shows 'Agents Hub' or similar",
+      "Step 3: Check agent cards are displayed in grid layout",
+      "Step 4: Verify each card shows: icon, name, description, 'Generate' button",
+      "Step 5: Confirm at least 6 agent types are visible: Email, Landing Page, Social Media, Ad Copy, Video Script, Content Strategy"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agents hub requires client selection before generation",
+    "steps": [
+      "Step 1: Navigate to /agents",
+      "Step 2: Click on any agent card",
+      "Step 3: Verify client selector is prominently displayed",
+      "Step 4: Attempt to generate without selecting client",
+      "Step 5: Confirm error message or disabled state prevents generation",
+      "Step 6: Select a client and verify generate button becomes enabled"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Context Engine assembles full client context when client is selected",
+    "steps": [
+      "Step 1: Navigate to /agents and select Email agent",
+      "Step 2: Select a client with brand voice defined",
+      "Step 3: Open browser dev tools Network tab",
+      "Step 4: Verify API call to /api/agents/context/:clientId is made",
+      "Step 5: Check response includes: brand_voice, icp_data, constitution_rules",
+      "Step 6: Verify response includes: top_performers, active_campaigns",
+      "Step 7: Confirm context is displayed or indicated in UI"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Prompt Studio displays preset dropdown with multiple options",
+    "steps": [
+      "Step 1: Navigate to /agents and select any copy agent",
+      "Step 2: Select a client",
+      "Step 3: Locate 'Prompt Preset' or 'Tone' dropdown",
+      "Step 4: Click dropdown and verify options include: Conversion-focused, Consultative, Institutional, Friendly, Urgent",
+      "Step 5: Select different presets and verify selection is saved",
+      "Step 6: Confirm preset affects the system prompt used for generation"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Prompt Studio allows custom prompt editing with variable interpolation",
+    "steps": [
+      "Step 1: Navigate to /agents and select any agent",
+      "Step 2: Select a client",
+      "Step 3: Find 'Custom Prompt' or 'Advanced' toggle/button",
+      "Step 4: Expand custom prompt editor",
+      "Step 5: Verify textarea shows current system prompt template",
+      "Step 6: Edit prompt to include {{client_name}} and {{brand_voice}}",
+      "Step 7: Generate content and verify variables were interpolated correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Email Sequence Agent generates welcome email with all required elements",
+    "steps": [
+      "Step 1: Navigate to /agents and select Email Sequence Agent",
+      "Step 2: Select a client with brand voice",
+      "Step 3: Choose 'Welcome Email' type",
+      "Step 4: Enter brief: 'Welcome new subscribers to our newsletter'",
+      "Step 5: Click Generate",
+      "Step 6: Wait for streaming response to complete",
+      "Step 7: Verify output includes: Subject line, Preview text, Email body",
+      "Step 8: Check email body contains: Greeting, Introduction, Key Benefits, First Steps, CTA",
+      "Step 9: Confirm tone matches brand voice of selected client"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Email Sequence Agent generates abandoned cart email with urgency element",
+    "steps": [
+      "Step 1: Navigate to /agents and select Email Sequence Agent",
+      "Step 2: Select a client",
+      "Step 3: Choose 'Abandoned Cart' type",
+      "Step 4: Enter product name and brief",
+      "Step 5: Click Generate",
+      "Step 6: Verify output includes urgency/scarcity messaging",
+      "Step 7: Check product reminder is present",
+      "Step 8: Verify discount offer placeholder or actual offer is included",
+      "Step 9: Confirm strong CTA button copy is generated"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Email Sequence Agent generates multi-email nurture sequence",
+    "steps": [
+      "Step 1: Navigate to /agents and select Email Sequence Agent",
+      "Step 2: Select a client",
+      "Step 3: Choose 'Nurture Sequence' type",
+      "Step 4: Set sequence length to 5 emails",
+      "Step 5: Enter sequence objective and brief",
+      "Step 6: Click Generate",
+      "Step 7: Verify 5 distinct emails are generated",
+      "Step 8: Check emails have logical progression",
+      "Step 9: Confirm each email has unique subject line",
+      "Step 10: Verify consistent brand voice across all emails"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Email Agent generates subject line A/B variants",
+    "steps": [
+      "Step 1: Navigate to Email Sequence Agent",
+      "Step 2: Select client and email type",
+      "Step 3: Enable 'Generate A/B Variants' option",
+      "Step 4: Click Generate",
+      "Step 5: Verify at least 3 subject line variants are generated",
+      "Step 6: Check variants have different approaches (curiosity, benefit, urgency)",
+      "Step 7: Confirm variants are clearly labeled A, B, C"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Landing Page Agent generates complete landing page copy with all sections",
+    "steps": [
+      "Step 1: Navigate to /agents and select Landing Page Agent",
+      "Step 2: Select a client with ICP data defined",
+      "Step 3: Enter landing page brief with product/service description",
+      "Step 4: Click Generate",
+      "Step 5: Wait for streaming response",
+      "Step 6: Verify output includes Hero section with headline and subheadline",
+      "Step 7: Check Problem section identifies pain points",
+      "Step 8: Verify Solution section presents the offer",
+      "Step 9: Confirm Features section with at least 3 features",
+      "Step 10: Check Social Proof section with testimonial framework",
+      "Step 11: Verify FAQ section with at least 3 Q&As",
+      "Step 12: Confirm CTA section with primary and secondary CTAs"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Landing Page Agent generates SEO meta description",
+    "steps": [
+      "Step 1: Navigate to Landing Page Agent",
+      "Step 2: Select client and enter brief",
+      "Step 3: Click Generate",
+      "Step 4: Verify output includes 'Meta Description' field",
+      "Step 5: Check meta description is under 160 characters",
+      "Step 6: Confirm it includes primary keyword and CTA"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Social Media Agent generates Instagram single post caption",
+    "steps": [
+      "Step 1: Navigate to /agents and select Social Media Agent",
+      "Step 2: Select a client",
+      "Step 3: Choose 'Instagram Post' type",
+      "Step 4: Enter post topic and objective",
+      "Step 5: Click Generate",
+      "Step 6: Verify caption is generated with hook opening",
+      "Step 7: Check body provides value or story",
+      "Step 8: Confirm CTA is included",
+      "Step 9: Verify hashtag suggestions are provided",
+      "Step 10: Check character count is appropriate for Instagram"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Social Media Agent generates Instagram carousel copy with slide-by-slide content",
+    "steps": [
+      "Step 1: Navigate to Social Media Agent",
+      "Step 2: Select a client",
+      "Step 3: Choose 'Instagram Carousel' type",
+      "Step 4: Set number of slides (e.g., 7)",
+      "Step 5: Enter carousel topic",
+      "Step 6: Click Generate",
+      "Step 7: Verify output includes copy for each slide numbered 1-7",
+      "Step 8: Check slide 1 has strong hook",
+      "Step 9: Verify middle slides provide value progression",
+      "Step 10: Confirm final slide has clear CTA",
+      "Step 11: Check caption copy is also generated separately"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Social Media Agent generates Reels/TikTok script with timestamps",
+    "steps": [
+      "Step 1: Navigate to Social Media Agent",
+      "Step 2: Select a client",
+      "Step 3: Choose 'Reels/TikTok Script' type",
+      "Step 4: Enter video topic and target duration (30s)",
+      "Step 5: Click Generate",
+      "Step 6: Verify script includes Hook (0-3s) section",
+      "Step 7: Check Body section with problem/solution",
+      "Step 8: Verify CTA (final seconds) is included",
+      "Step 9: Confirm caption with hashtags is generated",
+      "Step 10: Check script includes visual/b-roll suggestions"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Social Media Agent generates LinkedIn post with professional tone",
+    "steps": [
+      "Step 1: Navigate to Social Media Agent",
+      "Step 2: Select a client",
+      "Step 3: Choose 'LinkedIn Post' type",
+      "Step 4: Enter topic and key message",
+      "Step 5: Click Generate",
+      "Step 6: Verify tone is professional/business-appropriate",
+      "Step 7: Check post has strong opening line",
+      "Step 8: Verify body provides insights or value",
+      "Step 9: Confirm CTA or engagement question at end",
+      "Step 10: Check no excessive hashtags (max 3-5)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Social Media Agent generates Twitter/X thread",
+    "steps": [
+      "Step 1: Navigate to Social Media Agent",
+      "Step 2: Select a client",
+      "Step 3: Choose 'Twitter/X Thread' type",
+      "Step 4: Enter thread topic",
+      "Step 5: Click Generate",
+      "Step 6: Verify multiple tweets are generated (5-10)",
+      "Step 7: Check each tweet is under 280 characters",
+      "Step 8: Verify first tweet has strong hook",
+      "Step 9: Confirm tweets are numbered or have flow indicators",
+      "Step 10: Check final tweet has CTA"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Ad Copy Agent generates Facebook ad with multiple variations",
+    "steps": [
+      "Step 1: Navigate to /agents and select Ad Copy Agent",
+      "Step 2: Select a client with active campaigns",
+      "Step 3: Choose 'Facebook/Instagram Ad' type",
+      "Step 4: Enter ad objective and product details",
+      "Step 5: Request 5 variations",
+      "Step 6: Click Generate",
+      "Step 7: Verify 5 distinct ad variations are generated",
+      "Step 8: Check each variation has: Primary Text, Headline, Description",
+      "Step 9: Verify variations use different angles/hooks",
+      "Step 10: Confirm compliance with character limits"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Ad Copy Agent generates Google Ads copy with all required fields",
+    "steps": [
+      "Step 1: Navigate to Ad Copy Agent",
+      "Step 2: Select a client",
+      "Step 3: Choose 'Google Ads' type",
+      "Step 4: Enter keywords and landing page URL",
+      "Step 5: Click Generate",
+      "Step 6: Verify output includes: Headlines (30 char each), Descriptions (90 char)",
+      "Step 7: Check at least 15 headline variations generated",
+      "Step 8: Verify at least 4 description variations",
+      "Step 9: Confirm keywords are incorporated naturally",
+      "Step 10: Check display URL path suggestions"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Ad Copy Agent checks content against constitution rules",
+    "steps": [
+      "Step 1: Create constitution rule that blocks certain words (e.g., 'guaranteed')",
+      "Step 2: Navigate to Ad Copy Agent",
+      "Step 3: Select client with the constitution rule",
+      "Step 4: Generate ad copy for product",
+      "Step 5: Verify generated copy does not contain blocked words",
+      "Step 6: Check if compliance indicator shows 'passed' status",
+      "Step 7: Attempt to manually add blocked word and regenerate",
+      "Step 8: Confirm warning or auto-replacement occurs"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Video Script Agent generates UGC-style script with structure",
+    "steps": [
+      "Step 1: Navigate to /agents and select Video Script Agent",
+      "Step 2: Select a client",
+      "Step 3: Choose 'UGC-Style Video' type",
+      "Step 4: Enter product and target audience",
+      "Step 5: Click Generate",
+      "Step 6: Verify script has Hook section (attention grabber)",
+      "Step 7: Check Problem section identifies pain point",
+      "Step 8: Verify Solution section presents product",
+      "Step 9: Confirm Benefits/Features are listed",
+      "Step 10: Check CTA section with clear action",
+      "Step 11: Verify script includes suggested shot types or visual notes"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Video Script Agent generates talking head script with timestamps",
+    "steps": [
+      "Step 1: Navigate to Video Script Agent",
+      "Step 2: Select a client",
+      "Step 3: Choose 'Talking Head' type",
+      "Step 4: Enter topic and target duration (2 minutes)",
+      "Step 5: Click Generate",
+      "Step 6: Verify script is approximately 2 minutes when read aloud",
+      "Step 7: Check timestamp markers are included (0:00, 0:30, 1:00, etc.)",
+      "Step 8: Verify B-roll suggestions at appropriate moments",
+      "Step 9: Confirm natural conversational tone",
+      "Step 10: Check speaker cues are included"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Content Strategy Agent generates 30-day editorial calendar",
+    "steps": [
+      "Step 1: Navigate to /agents and select Content Strategy Agent",
+      "Step 2: Select a client",
+      "Step 3: Choose 'Editorial Calendar' type",
+      "Step 4: Set period to 30 days",
+      "Step 5: Enter content pillars and goals",
+      "Step 6: Click Generate",
+      "Step 7: Verify calendar shows 30 days of content suggestions",
+      "Step 8: Check each day has: content type, topic, platform, brief",
+      "Step 9: Verify mix of content types (posts, videos, stories)",
+      "Step 10: Confirm content aligns with provided pillars",
+      "Step 11: Check calendar can be exported or saved"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Content Strategy Agent generates content pillar suggestions",
+    "steps": [
+      "Step 1: Navigate to Content Strategy Agent",
+      "Step 2: Select a client",
+      "Step 3: Choose 'Content Pillars' type",
+      "Step 4: Enter niche and target audience",
+      "Step 5: Click Generate",
+      "Step 6: Verify 4-6 content pillars are suggested",
+      "Step 7: Check each pillar has: name, description, example topics",
+      "Step 8: Confirm pillars cover different aspects of the niche",
+      "Step 9: Verify alignment with client's brand voice"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "SMS/WhatsApp Agent generates compliant SMS under 160 characters",
+    "steps": [
+      "Step 1: Navigate to /agents and select SMS/WhatsApp Agent",
+      "Step 2: Select a client",
+      "Step 3: Choose 'SMS Campaign' type",
+      "Step 4: Enter campaign objective",
+      "Step 5: Click Generate",
+      "Step 6: Verify SMS is under 160 characters",
+      "Step 7: Check character counter is displayed",
+      "Step 8: Verify opt-out text is mentioned if required",
+      "Step 9: Confirm link placeholder is included",
+      "Step 10: Check multiple variations are generated"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent generation streams response in real-time via SSE",
+    "steps": [
+      "Step 1: Navigate to any agent and configure generation",
+      "Step 2: Open browser dev tools Network tab",
+      "Step 3: Click Generate",
+      "Step 4: Verify SSE connection is established",
+      "Step 5: Watch text appear progressively in output area",
+      "Step 6: Confirm response is not all-at-once",
+      "Step 7: Check streaming indicator is visible during generation"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent output can be regenerated without losing input",
+    "steps": [
+      "Step 1: Navigate to any agent",
+      "Step 2: Fill in all inputs and generate content",
+      "Step 3: Wait for output to complete",
+      "Step 4: Click 'Regenerate' button",
+      "Step 5: Verify inputs are preserved",
+      "Step 6: Confirm new output is different from previous",
+      "Step 7: Check generation count increments"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent output can be saved to creative assets",
+    "steps": [
+      "Step 1: Navigate to any agent and generate content",
+      "Step 2: Wait for output to complete",
+      "Step 3: Click 'Save to Assets' or 'Save' button",
+      "Step 4: Select target campaign (optional)",
+      "Step 5: Confirm save action",
+      "Step 6: Navigate to client's creative assets",
+      "Step 7: Verify saved content appears in assets list",
+      "Step 8: Check metadata includes agent type and generation date"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent output can be copied to clipboard",
+    "steps": [
+      "Step 1: Navigate to any agent and generate content",
+      "Step 2: Wait for output to complete",
+      "Step 3: Click 'Copy' button on output section",
+      "Step 4: Verify success toast/notification appears",
+      "Step 5: Paste in external application",
+      "Step 6: Confirm content was copied correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent uses brand voice from client context in generation",
+    "steps": [
+      "Step 1: Update client's brand voice with specific tone (e.g., 'casual and humorous')",
+      "Step 2: Navigate to Email Agent and select that client",
+      "Step 3: Generate welcome email",
+      "Step 4: Verify generated content matches casual/humorous tone",
+      "Step 5: Change to different client with formal brand voice",
+      "Step 6: Generate same email type",
+      "Step 7: Confirm tone is now formal",
+      "Step 8: Verify both outputs are distinct in style"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent uses ICP data to personalize content",
+    "steps": [
+      "Step 1: Update client's ICP with specific pain points",
+      "Step 2: Navigate to Landing Page Agent and select that client",
+      "Step 3: Generate landing page for a product",
+      "Step 4: Verify Problem section addresses the specific pain points from ICP",
+      "Step 5: Check Solution section speaks to ICP's desires",
+      "Step 6: Confirm language matches ICP's demographics"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent queries and uses top performing hooks from performance memory",
+    "steps": [
+      "Step 1: Add performance memory entries for a client with high-scoring hooks",
+      "Step 2: Navigate to Ad Copy Agent and select that client",
+      "Step 3: Generate ad copy",
+      "Step 4: Verify generated hooks are inspired by top performers",
+      "Step 5: Check 'Inspired by' or 'Based on' indicator shows source",
+      "Step 6: Confirm hooks maintain brand consistency while leveraging proven patterns"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent generation history is logged and viewable",
+    "steps": [
+      "Step 1: Generate content with multiple agents",
+      "Step 2: Navigate to agent history/activity section",
+      "Step 3: Verify recent generations are listed",
+      "Step 4: Check each entry shows: agent type, client, timestamp, preview",
+      "Step 5: Click on a history entry",
+      "Step 6: Verify full output is viewable",
+      "Step 7: Confirm option to reuse/regenerate from history"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Custom prompt presets can be created and saved per client",
+    "steps": [
+      "Step 1: Navigate to any agent",
+      "Step 2: Select a client",
+      "Step 3: Expand custom prompt editor",
+      "Step 4: Edit system prompt with custom instructions",
+      "Step 5: Click 'Save as Preset' button",
+      "Step 6: Enter preset name (e.g., 'Client X Special Tone')",
+      "Step 7: Save the preset",
+      "Step 8: Verify preset appears in dropdown for that client",
+      "Step 9: Select different agent for same client",
+      "Step 10: Confirm custom preset is available there too"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent respects constitution compliance rules during generation",
+    "steps": [
+      "Step 1: Create constitution rule blocking 'free' and '100% guarantee'",
+      "Step 2: Navigate to Ad Copy Agent",
+      "Step 3: Select client with constitution rules",
+      "Step 4: Enter brief that would naturally include blocked terms",
+      "Step 5: Generate ad copy",
+      "Step 6: Verify output avoids blocked terms",
+      "Step 7: Check compliance badge shows 'Compliant' status",
+      "Step 8: Verify alternative phrasing was used instead"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent tool calling retrieves active campaigns for context",
+    "steps": [
+      "Step 1: Create multiple active campaigns for a client with different angles",
+      "Step 2: Navigate to Ad Copy Agent and select that client",
+      "Step 3: Generate ad copy",
+      "Step 4: Verify generated copy aligns with active campaign angles",
+      "Step 5: Check if user can select specific campaign to align with",
+      "Step 6: Select specific campaign and regenerate",
+      "Step 7: Confirm output is more specifically aligned with that campaign's angle"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Email Builder and Landing Page removed from Reports and now in Agents",
+    "steps": [
+      "Step 1: Navigate to /reports",
+      "Step 2: Verify Email Builder tab is no longer present",
+      "Step 3: Verify Landing Page tab is no longer present",
+      "Step 4: Reports page only shows reports functionality",
+      "Step 5: Navigate to /agents",
+      "Step 6: Verify Email Agent card is present",
+      "Step 7: Verify Landing Page Agent card is present"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent usage statistics display tokens and generations count",
+    "steps": [
+      "Step 1: Navigate to Agents hub",
+      "Step 2: Generate content with multiple agents",
+      "Step 3: Find usage statistics section",
+      "Step 4: Verify total tokens used this month is displayed",
+      "Step 5: Check total generations count is accurate",
+      "Step 6: Verify per-agent breakdown is available",
+      "Step 7: Confirm cost estimate is shown if applicable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Agents hub page has modern grid layout with hover effects",
+    "steps": [
+      "Step 1: Navigate to /agents",
+      "Step 2: Take screenshot of agents grid",
+      "Step 3: Verify cards have consistent styling",
+      "Step 4: Hover over agent card",
+      "Step 5: Confirm hover effect (scale, shadow, or border highlight)",
+      "Step 6: Check spacing is consistent between cards",
+      "Step 7: Verify responsive behavior on smaller screens"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Agent generation interface has clear visual hierarchy",
+    "steps": [
+      "Step 1: Open any agent generation interface",
+      "Step 2: Verify client selector is prominent at top",
+      "Step 3: Check input areas are clearly labeled",
+      "Step 4: Verify Generate button is visually prominent",
+      "Step 5: Confirm output area is visually distinct from input",
+      "Step 6: Check loading state has clear indicator",
+      "Step 7: Verify action buttons (copy, save, regenerate) are accessible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Agent cards have distinct icons for each agent type",
+    "steps": [
+      "Step 1: Navigate to /agents",
+      "Step 2: Verify Email Agent has email/envelope icon",
+      "Step 3: Check Landing Page Agent has page/web icon",
+      "Step 4: Verify Social Media Agent has social icons",
+      "Step 5: Check Ad Copy Agent has megaphone/ad icon",
+      "Step 6: Verify Video Script Agent has video/film icon",
+      "Step 7: Confirm icons are consistent size and style"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Prompt preset dropdown has clear visual styling",
+    "steps": [
+      "Step 1: Open any agent interface",
+      "Step 2: Locate prompt preset dropdown",
+      "Step 3: Verify dropdown has clear label",
+      "Step 4: Open dropdown and check options are readable",
+      "Step 5: Verify selected option is visually indicated",
+      "Step 6: Check dropdown works in dark mode"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Agent output preview has proper formatting and sections",
+    "steps": [
+      "Step 1: Generate content with any agent",
+      "Step 2: Wait for output to complete",
+      "Step 3: Verify output sections are visually separated",
+      "Step 4: Check headings are bold and distinct",
+      "Step 5: Verify body text is readable",
+      "Step 6: Confirm variations are clearly numbered if multiple",
+      "Step 7: Check code/special formatting is preserved"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Complete end-to-end agent workflow: select agent, configure, generate, save",
+    "steps": [
+      "Step 1: Navigate to /agents",
+      "Step 2: Click on Email Sequence Agent card",
+      "Step 3: Select a client from dropdown",
+      "Step 4: Verify client context is loaded (brand voice indicator)",
+      "Step 5: Select 'Welcome Email' type",
+      "Step 6: Choose 'Friendly' prompt preset",
+      "Step 7: Enter brief describing the welcome email goal",
+      "Step 8: Click Generate button",
+      "Step 9: Watch streaming output appear",
+      "Step 10: Verify complete email is generated with all elements",
+      "Step 11: Click 'Save to Assets' button",
+      "Step 12: Select target campaign (optional)",
+      "Step 13: Confirm save",
+      "Step 14: Navigate to client's creative assets",
+      "Step 15: Verify email appears in saved assets"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent handles API errors gracefully with retry option",
+    "steps": [
+      "Step 1: Navigate to any agent",
+      "Step 2: Configure generation parameters",
+      "Step 3: Simulate API error (disconnect network briefly)",
+      "Step 4: Click Generate",
+      "Step 5: Verify error message is displayed clearly",
+      "Step 6: Check 'Retry' button is available",
+      "Step 7: Reconnect network and click Retry",
+      "Step 8: Confirm generation proceeds successfully"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent supports keyboard shortcuts for common actions",
+    "steps": [
+      "Step 1: Navigate to any agent interface",
+      "Step 2: Fill in required inputs",
+      "Step 3: Press Cmd/Ctrl+Enter to generate",
+      "Step 4: Verify generation starts",
+      "Step 5: After output, press Cmd/Ctrl+C to copy",
+      "Step 6: Verify content is copied",
+      "Step 7: Press Cmd/Ctrl+S to save",
+      "Step 8: Verify save dialog appears"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent generation can be cancelled mid-stream",
+    "steps": [
+      "Step 1: Navigate to any agent",
+      "Step 2: Configure and start generation",
+      "Step 3: While streaming, click 'Cancel' or 'Stop' button",
+      "Step 4: Verify generation stops immediately",
+      "Step 5: Check partial output is preserved",
+      "Step 6: Verify can start new generation without issues"
+    ],
+    "passes": false
+  }
+]
+

@@ -1,0 +1,1219 @@
+<project_specification>
+  <project_name>AMA - Autonomous Marketing Agency Platform</project_name>
+
+  <overview>
+    Build a fully functional Autonomous Marketing Agency (AMA) platform—a "Company-in-a-Box" system that acts as a 
+    virtual marketing department. The application provides an interactive SaaS-style visual interface combined with 
+    a "Super Agent" conversational AI that understands all system functions and can guide users or execute any 
+    operation via natural language. The platform integrates the MAKER framework (Maximal Agentic Decomposition with 
+    Voting) for reliable decision-making and multi-agent collaboration, backed by Git-based state management for 
+    full audit trails. The system executes, learns, evolves, and self-improves through continuous optimization cycles.
+  </overview>
+
+  <technology_stack>
+    <api_key>
+        You can use an API key located at /tmp/api-key for testing. You will not be allowed to read this file, but you can reference it in code.
+    </api_key>
+    <frontend>
+      <framework>React with Vite</framework>
+      <styling>Tailwind CSS (via CDN)</styling>
+      <state_management>React hooks, context, and Zustand for global state</state_management>
+      <routing>React Router for navigation</routing>
+      <markdown>React Markdown for message rendering</markdown>
+      <code_highlighting>Syntax highlighting for code blocks and SOPs</code_highlighting>
+      <port>Only launch on port {frontend_port}</port>
+    </frontend>
+    <backend>
+      <runtime>Node.js with Express</runtime>
+      <database>PostgreSQL via Supabase (@supabase/supabase-js), JSON files for state management</database>
+      <api_integration>
+        Multi-provider AI system with abstraction layer:
+        - Anthropic (Direct SDK: @anthropic-ai/sdk) for Claude models
+        - OpenRouter (REST API) for access to 50+ models from multiple providers
+        - Provider factory pattern for unified interface
+        - User-configurable default provider with per-conversation/agent overrides
+      </api_integration>
+      <streaming>Server-Sent Events for real-time agent updates and task progress</streaming>
+      <version_control>Git integration for state commits and audit trails</version_control>
+      <repository>https://github.com/lucasttnwork/AUTO-MARKETING.git</repository>
+    </backend>
+    <communication>
+      <api>RESTful endpoints for all operations</api>
+      <streaming>SSE for real-time agent execution and status updates</streaming>
+      <ai_providers>
+        - Anthropic Direct: @anthropic-ai/sdk for native Claude API access
+        - OpenRouter: https://openrouter.ai/api/v1 for multi-model support
+        - Unified streaming interface via async generators
+        - Model library management for dynamic model selection
+      </ai_providers>
+      <external_apis>Meta Marketing API, Meta Ad Library, Image/Video Generation APIs</external_apis>
+    </communication>
+  </technology_stack>
+
+  <prerequisites>
+    <environment_setup>
+      - Repository includes .env with all API keys and database credentials
+      - Required environment variables:
+        * SUPABASE_URL - Supabase project URL
+        * SUPABASE_SERVICE_ROLE_KEY - Server-side authentication
+        * SUPABASE_ANON_KEY - Client-side authentication (if needed)
+        * ANTHROPIC_API_KEY - Direct Anthropic API access
+        * OPENROUTER_API_KEY - OpenRouter API access (ALREADY CONFIGURED IN .env)
+        * DEFAULT_AI_PROVIDER - Default provider (anthropic or openrouter)
+        * DEFAULT_MODEL_STRING - Default model identifier
+      - Frontend dependencies pre-installed via pnpm
+      - Backend code goes in /server directory
+      - Supabase database initialized with complete schema (15+ tables)
+      - Git repository initialized for state management
+      - /agency_core directory structure for SOPs, clients, memory, and harness
+      - Install backend dependencies as needed
+    </environment_setup>
+
+    <development_testing_configuration>
+      CRITICAL: During development and testing, use the following configuration:
+
+      1. DEFAULT AI PROVIDER FOR TESTING: OpenRouter
+         - The OPENROUTER_API_KEY is already configured in the project's .env file
+         - Read this key from process.env.OPENROUTER_API_KEY at runtime
+         - DO NOT hardcode any API keys in the source code
+
+      2. DEFAULT MODEL FOR TESTING: openai/gpt-4.1-mini
+         - Use "openai/gpt-4.1-mini" as the default model string in the ai_models seed data
+         - This model should be marked as is_default: true when seeding the database
+         - All agent generation tests should use this model unless explicitly testing another
+
+      3. TESTING WORKFLOW:
+         - When implementing AI features, always test with actual API calls using OpenRouter
+         - The OpenRouter API endpoint is: https://openrouter.ai/api/v1/chat/completions
+         - Verify streaming works correctly with the gpt-4.1-mini model
+         - Test all agents (Copy, Email, Social, VSL, etc.) with real generations
+         - Ensure error handling works when API returns errors
+
+      4. SEED DATA FOR ai_models TABLE:
+         When creating the database seed, include these models:
+         - openai/gpt-4.1-mini (OpenRouter) - SET AS DEFAULT, is_default: true
+         - claude-sonnet-4-20250514 (Anthropic)
+         - claude-opus-4-20250514 (Anthropic)
+         - openai/gpt-4-turbo (OpenRouter)
+         - anthropic/claude-3.5-sonnet (OpenRouter)
+         - google/gemini-pro (OpenRouter)
+
+      5. ENVIRONMENT VARIABLE READING:
+         The server must read from .env file at startup:
+         ```javascript
+         const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+         const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+         const DEFAULT_PROVIDER = process.env.DEFAULT_AI_PROVIDER || 'openrouter';
+         const DEFAULT_MODEL = process.env.DEFAULT_MODEL_STRING || 'openai/gpt-4.1-mini';
+         ```
+
+      6. VALIDATION CHECKLIST FOR AI FEATURES:
+         - [ ] Server reads OPENROUTER_API_KEY from .env
+         - [ ] Default model is set to openai/gpt-4.1-mini
+         - [ ] Agent generation produces actual AI output
+         - [ ] Streaming displays text incrementally
+         - [ ] Model selector allows switching between models
+         - [ ] Super Agent chat works with selected model
+         - [ ] Errors are caught and displayed to user
+    </development_testing_configuration>
+  </prerequisites>
+
+  <core_features>
+    <super_agent_interface>
+      - Conversational AI assistant that knows ALL system functions
+      - Natural language command execution (e.g., "Launch Black Friday campaign for Client X")
+      - Intelligent task decomposition via MAKER framework
+      - Real-time streaming of agent thoughts and actions
+      - Context-aware suggestions and guidance
+      - Voice input support for hands-free operation
+      - Command confirmation before executing critical actions
+      - Ability to pause, resume, or cancel any running task
+      - Human-in-the-loop checkpoints for critical decisions
+      - Explain mode: describe what any function does before executing
+    </super_agent_interface>
+
+    <visual_dashboard>
+      - Modern SaaS-style interface with dark/light themes
+      - Client portfolio overview with key metrics
+      - Real-time task queue visualization (pending, in-progress, completed)
+      - Campaign performance dashboards with ROAS, CTR, CPC metrics
+      - Agent activity feed showing what each agent is doing
+      - Git commit history for full audit trail
+      - Red-flag alerts requiring human intervention
+      - Calendar view for campaign schedules
+      - Quick action buttons for common operations
+    </visual_dashboard>
+
+    <client_management>
+      - Create and onboard new clients with brand absorption
+      - Client directory with all associated data (/brand_voice, /assets, /campaigns)
+      - Brand voice extraction from existing content
+      - ICP (Ideal Customer Profile) definition wizard
+      - Competitor analysis automation
+      - SWOT generation for each client
+      - Client-specific custom instructions and rules
+      - Move clients between projects
+      - Archive and restore clients
+      - Export client data packages
+    </client_management>
+
+    <campaign_factory>
+      - Campaign creation wizard with angle development
+      - Offer structuring tools (discounts, bundles, guarantees)
+      - Funnel mapping visual editor (Ad → Landing Page → Email → Conversion)
+      - Budget allocation planner per platform and phase
+      - 30/60/90-day campaign calendar builder
+      - A/B test configuration and management
+      - Creative brief generation for designers/AI
+      - Multi-format asset production (1:1, 4:5, 9:16, 1.91:1)
+      - Video script generation with hooks, body, CTA structure
+      - Landing page copy generation
+      - Email sequence builder (Welcome, Abandoned Cart, Post-Purchase)
+    </campaign_factory>
+
+    <agent_congress>
+      - Multi-agent parallel execution visualization
+      - MAKER voting interface showing agent consensus
+      - Worker agent status (Copywriter, Designer, VideoScript, Spy)
+      - Critic agent feedback loop display
+      - Red-flag resolution interface for human intervention
+      - Agent performance analytics
+      - Custom agent configuration and prompts
+      - Voting threshold adjustment (first-to-ahead-by-k)
+      - Entropy monitoring for decision quality
+    </agent_congress>
+
+    <sop_management>
+      - Standard Operating Procedures library
+      - Visual SOP editor with step-by-step flows
+      - SOP templates for common marketing tasks
+      - Auto-update SOPs based on learned best practices
+      - Constitution file management (policy rules, quality standards)
+      - Client-specific SOP customization
+      - Version control for all SOP changes
+      - SOP execution tracking and metrics
+    </sop_management>
+
+    <market_intelligence>
+      - Competitor monitoring dashboard
+      - Meta Ad Library integration and scraping
+      - TikTok Creative Center integration (future)
+      - Trend detection and alerts
+      - Winning hook/creative pattern extraction
+      - Auto-generated iteration briefs based on trends
+      - Market intel report generation
+      - Competitor SWOT analysis
+    </market_intelligence>
+
+    <performance_optimization>
+      - Real-time ROAS, CTR, CPC, CPM monitoring
+      - Automated winner identification (top 10-20%)
+      - Loser elimination with configurable thresholds
+      - Creative fatigue detection (declining CTR/frequency)
+      - Scaling protocol recommendations
+      - Performance memory learning system
+      - A/B test results analysis
+      - Investment optimization suggestions
+    </performance_optimization>
+
+    <technical_setup>
+      - Pixel installation code generator (Meta, CAPI)
+      - GTM configuration templates
+      - UTM naming convention automation
+      - Ad account audit tools
+      - Domain verification guides
+      - Campaign structure builder (Campaign > Ad Sets > Ads)
+      - Audience creation tools (Lookalike, Custom, Interest)
+      - Automated rules configuration
+      - Launch checklist validation
+    </technical_setup>
+
+    <reporting_communication>
+      - Weekly automated performance reports
+      - Monthly deep-dive analysis generation
+      - Client dashboard builder (Google Sheets, Looker Studio integration)
+      - Meeting agenda and talking points generator
+      - Client-facing deliverable templates
+      - Report scheduling and automation
+      - Custom KPI tracking
+      - Export in multiple formats (PDF, CSV, Notion)
+    </reporting_communication>
+
+    <agents_hub>
+      <overview>
+        Centralized hub for all AI-powered content generation agents. Each agent specializes in a specific type of marketing content and can access full client context including brand voice, ICP data, performance history, and active campaigns. Agents support dynamic system prompts with customizable presets and can use internal tools to query relevant data during generation.
+      </overview>
+
+      <context_engine>
+        - Automatic client context assembly when agent is invoked
+        - Injects brand_voice, icp_data, constitution rules, performance_memory
+        - Loads active campaigns and their angles for consistency
+        - Fetches top-performing creative elements (hooks, CTAs, headlines)
+        - Supports RAG-style retrieval from client's historical content
+        - Context is passed to agent as structured JSON in system prompt
+      </context_engine>
+
+      <prompt_studio>
+        - Dynamic system prompt configuration per agent
+        - Preset library: Conversion-focused, Consultative, Institutional, Friendly, Urgent
+        - Custom prompt editor with syntax highlighting
+        - Variable interpolation: {{client_name}}, {{brand_voice}}, {{icp_summary}}, {{top_hooks}}
+        - Prompt templates can be saved per client
+        - A/B testing of different prompt configurations
+        - Prompt version history with rollback
+      </prompt_studio>
+
+      <copy_agents>
+        <email_sequence_agent>
+          - Types: Welcome, Abandoned Cart, Post-Purchase, Re-engagement, Nurture, Launch
+          - Multi-email sequence generation (3-7 emails per sequence)
+          - Subject line A/B variants generation
+          - Preview text optimization
+          - CTA button copy variations
+          - Personalization placeholders support
+          - HTML-ready output option
+        </email_sequence_agent>
+
+        <landing_page_agent>
+          - Full landing page copy generation
+          - Sections: Hero, Problem, Solution, Features, Social Proof, FAQ, CTA
+          - Multiple headline variations per section
+          - SEO meta description generation
+          - Above-fold and below-fold optimization
+          - Mobile-first copy considerations
+          - Wireframe-style section preview
+        </landing_page_agent>
+
+        <social_media_agent>
+          - Instagram posts (single image captions)
+          - Instagram carousels (multi-slide copy with hooks per slide)
+          - Instagram Reels/TikTok scripts (hook, body, CTA, caption)
+          - LinkedIn posts (professional tone)
+          - Twitter/X threads
+          - Facebook ad copy (primary text, headline, description)
+          - Platform-specific character limits enforced
+          - Hashtag suggestions based on niche
+        </social_media_agent>
+
+        <ad_copy_agent>
+          - Facebook/Instagram ad copy (all placements)
+          - Google Ads copy (headlines, descriptions, display URLs)
+          - YouTube ad scripts (pre-roll, mid-roll)
+          - Native ad copy
+          - Multi-variant generation (5-10 variations per request)
+          - Hook library integration
+          - Compliance check against constitution rules
+        </ad_copy_agent>
+
+        <content_strategy_agent>
+          - Editorial calendar generation (30/60/90 days)
+          - Content pillar definition
+          - Topic clusters and keyword mapping
+          - Content gap analysis
+          - Competitor content audit summaries
+          - Trending topic suggestions
+          - Content repurposing recommendations
+        </content_strategy_agent>
+
+        <video_script_agent>
+          - UGC-style video scripts
+          - Talking head scripts
+          - Product demo scripts
+          - Testimonial frameworks
+          - Hook → Problem → Solution → CTA structure
+          - Timestamp-based shot suggestions
+          - B-roll recommendations
+        </video_script_agent>
+
+        <sms_whatsapp_agent>
+          - SMS campaigns (160 char limit)
+          - WhatsApp marketing messages
+          - Broadcast sequences
+          - Conversational flows
+          - Emoji optimization
+          - Link shortener integration
+        </sms_whatsapp_agent>
+      </copy_agents>
+
+      <strategic_agents>
+        <brand_voice_analyzer>
+          - Extract brand voice from existing content
+          - Tone analysis (formal, casual, professional, playful)
+          - Vocabulary patterns identification
+          - Writing style guide generation
+          - Competitor voice comparison
+        </brand_voice_analyzer>
+
+        <icp_researcher>
+          - Ideal Customer Profile deep dive
+          - Pain points expansion
+          - Desire mapping
+          - Objection anticipation
+          - Customer journey mapping
+          - Persona card generation
+        </icp_researcher>
+
+        <competitor_spy>
+          - Ad library analysis
+          - Landing page teardowns
+          - Messaging pattern extraction
+          - Weakness identification
+          - Differentiation opportunities
+        </competitor_spy>
+      </strategic_agents>
+
+      <agent_tools>
+        - query_brand_voice(client_id): Retrieve full brand voice document
+        - query_icp(client_id): Get ICP data with pain points and desires
+        - query_top_performers(client_id, element_type, limit): Get best performing hooks/CTAs/headlines
+        - query_active_campaigns(client_id): Get current campaign angles and offers
+        - query_constitution(client_id): Get compliance rules and brand guidelines
+        - query_competitor_intel(client_id): Get recent competitor analysis
+        - save_to_creative_assets(content, type, campaign_id): Save generated content
+        - log_generation(agent_type, input, output, tokens): Track usage
+      </agent_tools>
+
+      <agent_ui_components>
+        - Agent card with icon, name, description, and "Generate" CTA
+        - Client selector (required before generation)
+        - Prompt preset dropdown
+        - Custom prompt editor (collapsible)
+        - Brief/input textarea with rich formatting
+        - Output preview with copy/edit/regenerate actions
+        - Save to campaign/client assets button
+        - Usage stats (tokens, generations this month)
+        - Agent activity history sidebar
+      </agent_ui_components>
+
+      <generation_workflow>
+        1. User selects agent from Agents hub
+        2. User selects target client (required)
+        3. System auto-loads client context via Context Engine
+        4. User optionally adjusts system prompt preset or custom prompt
+        5. User provides brief/input for generation
+        6. Agent executes with full context + tools available
+        7. Output streams in real-time with SSE
+        8. User can regenerate, edit, or save output
+        9. Generation logged to agent_executions table
+        10. Option to save to creative_assets linked to campaign
+      </generation_workflow>
+    </agents_hub>
+
+    <settings_preferences>
+      - Theme selection (Light, Dark, Auto)
+      - Font size and density adjustment
+      - Agent behavior configuration
+      - API key management
+      - AI Provider Configuration:
+        * Default provider selection (Anthropic vs OpenRouter)
+        * Model library management (add/remove/activate custom models)
+        * Default model selection
+        * Model display cards showing: provider, model string, description, status
+        * "Add Custom Model" modal for OpenRouter models
+        * Per-model activation toggle (show/hide from selection dropdowns)
+        * Set default button (automatically unsets previous default)
+      - Platform connection settings (Meta, Google, etc.)
+      - Notification preferences
+      - Keyboard shortcuts reference
+      - Data export and backup options
+      - Privacy and security settings
+      - Human-in-the-loop checkpoint configuration
+    </settings_preferences>
+
+    <accessibility>
+      - Full keyboard navigation
+      - Screen reader support
+      - ARIA labels and roles
+      - High contrast mode
+      - Focus management
+      - Reduced motion support
+    </accessibility>
+
+    <responsive_design>
+      - Mobile-first responsive layout
+      - Touch-optimized interface
+      - Collapsible sidebar on mobile
+      - Swipe gestures for navigation
+      - Adaptive dashboard layouts
+      - Progressive Web App (PWA) support
+    </responsive_design>
+  </core_features>
+
+  <database_schema>
+    <tables>
+      <users>
+        - id, email, name, avatar_url
+        - created_at, last_login
+        - preferences (JSON: theme, font_size, etc.)
+        - custom_instructions
+        - role (admin, operator)
+      </users>
+
+      <clients>
+        - id, user_id, name, website_url, status
+        - brand_voice_path, assets_path, campaigns_path
+        - custom_instructions, constitution_overrides (JSON)
+        - icp_data (JSON: demographics, psychographics, pain_points)
+        - created_at, updated_at, is_archived
+      </clients>
+
+      <campaigns>
+        - id, client_id, name, status (draft, active, paused, completed)
+        - angle, offer_structure, funnel_map (JSON)
+        - budget_allocation (JSON), schedule (JSON)
+        - target_roas, actual_roas
+        - created_at, updated_at, launched_at
+      </campaigns>
+
+      <tasks>
+        - id, client_id, campaign_id, parent_task_id
+        - type (creative, technical, strategic, optimization)
+        - description, status (pending, in_progress, completed, blocked, red_flagged)
+        - assigned_agent, priority
+        - created_at, started_at, completed_at
+        - git_commit_sha
+      </tasks>
+
+      <agent_executions>
+        - id, task_id, agent_type (strategist, creator, critic, spy)
+        - input_data (JSON), output_data (JSON)
+        - tokens_used, execution_time_ms
+        - status, error_message
+        - created_at
+      </agent_executions>
+
+      <agent_prompts>
+        - id, agent_type, client_id (null for global)
+        - preset_name, system_prompt_template
+        - variables (JSON array of variable names)
+        - is_default, is_active
+        - created_at, updated_at
+      </agent_prompts>
+
+      <voting_sessions>
+        - id, task_id, voting_type (first_to_ahead_by_k)
+        - options (JSON array of proposals)
+        - votes (JSON array of agent votes)
+        - winner_index, entropy_score
+        - is_red_flagged, red_flag_reason
+        - resolved_by_user_id, resolution
+        - created_at, resolved_at
+      </voting_sessions>
+
+      <creative_assets>
+        - id, campaign_id, task_id
+        - type (headline, body_copy, image_brief, video_script, email, sms)
+        - format (1_1, 4_5, 9_16, 1_91_1)
+        - content, version
+        - performance_score, approval_status
+        - created_at, updated_at
+      </creative_assets>
+
+      <market_intel>
+        - id, client_id, source (meta_ad_library, tiktok_creative_center)
+        - competitor_name, creative_url
+        - extracted_hook, extracted_angle, visual_style
+        - performance_indicators (JSON)
+        - created_at
+      </market_intel>
+
+      <performance_memory>
+        - id, client_id, campaign_id
+        - element_type (hook, angle, offer, visual, audience)
+        - element_value, performance_score
+        - roas, ctr, cpc, impressions
+        - is_best_practice, notes
+        - created_at
+      </performance_memory>
+
+      <agent_generations>
+        - id, agent_type, client_id, campaign_id
+        - input_brief, system_prompt_used
+        - output_content, output_variations (JSON)
+        - tokens_input, tokens_output
+        - generation_time_ms, model_used
+        - user_rating (1-5), feedback
+        - created_at
+      </agent_generations>
+
+      <sops>
+        - id, name, category, description
+        - steps (JSON array), prompts (JSON)
+        - is_active, version
+        - created_at, updated_at
+      </sops>
+
+      <constitution>
+        - id, client_id (null for global)
+        - type (meta_policy, quality_standard, brand_guideline)
+        - rule_name, rule_content
+        - severity (warning, block)
+        - is_active, created_at
+      </constitution>
+
+      <conversations>
+        - id, user_id, client_id, title
+        - context_type (general, client_specific, campaign_specific)
+        - messages (JSON array)
+        - created_at, updated_at
+      </conversations>
+
+      <git_commits>
+        - id, sha, task_id, message
+        - files_changed (JSON array)
+        - created_at
+      </git_commits>
+
+      <usage_tracking>
+        - id, user_id, agent_type
+        - input_tokens, output_tokens
+        - cost_estimate, operation_type
+        - created_at
+      </usage_tracking>
+
+      <ai_models>
+        - id (UUID primary key)
+        - model_string (unique, e.g., "openai/gpt-4", "anthropic/claude-3-opus", "claude-sonnet-4-20250514")
+        - provider (anthropic or openrouter)
+        - display_name (user-friendly name for UI)
+        - description (optional details about model capabilities)
+        - is_default (boolean, only one model can be default at a time)
+        - is_active (boolean, inactive models hidden from UI)
+        - created_at (timestamptz)
+      </ai_models>
+
+      <conversation_model_preferences>
+        - id (UUID primary key)
+        - conversation_id (foreign key to conversations table)
+        - model_id (foreign key to ai_models table)
+        - created_at (timestamptz)
+        Purpose: Track per-conversation model overrides from global default
+      </conversation_model_preferences>
+
+      <database_implementation_notes>
+        - Database Type: PostgreSQL via Supabase (cloud-hosted)
+        - Primary Keys: UUID (uuid_generate_v4()) instead of auto-increment integers
+        - JSON Columns: JSONB type for better performance and querying
+        - Timestamps: TIMESTAMPTZ for timezone-aware timestamps
+        - Boolean Columns: Native BOOLEAN type (not 0/1 integers)
+        - Connection: @supabase/supabase-js client library
+        - Authentication: Service role key for server-side, anon key for client-side
+        - Indexes: Create indexes on foreign keys and frequently queried columns
+        - Migrations: Schema defined in SQL files, executed via Supabase dashboard
+      </database_implementation_notes>
+    </tables>
+  </database_schema>
+
+  <api_endpoints_summary>
+    <super_agent>
+      - POST /api/agent/chat (conversational interface with Super Agent)
+      - POST /api/agent/chat/stream (streaming responses)
+      - POST /api/agent/execute (execute specific function via command)
+      - GET /api/agent/functions (list all available system functions)
+      - POST /api/agent/confirm (confirm pending action)
+      - POST /api/agent/cancel (cancel running task)
+    </super_agent>
+
+    <clients>
+      - GET /api/clients
+      - POST /api/clients (onboard new client)
+      - GET /api/clients/:id
+      - PUT /api/clients/:id
+      - DELETE /api/clients/:id
+      - POST /api/clients/:id/absorb (brand absorption)
+      - GET /api/clients/:id/brand-voice
+      - GET /api/clients/:id/competitors
+      - POST /api/clients/:id/swot
+    </clients>
+
+    <campaigns>
+      - GET /api/campaigns
+      - POST /api/campaigns
+      - GET /api/campaigns/:id
+      - PUT /api/campaigns/:id
+      - DELETE /api/campaigns/:id
+      - POST /api/campaigns/:id/launch
+      - POST /api/campaigns/:id/pause
+      - GET /api/campaigns/:id/performance
+      - POST /api/campaigns/:id/optimize
+    </campaigns>
+
+    <tasks>
+      - GET /api/tasks
+      - POST /api/tasks
+      - GET /api/tasks/:id
+      - PUT /api/tasks/:id
+      - POST /api/tasks/:id/start
+      - POST /api/tasks/:id/complete
+      - POST /api/tasks/:id/red-flag
+      - GET /api/tasks/queue
+      - GET /api/tasks/stream (SSE for task updates)
+    </tasks>
+
+    <agents>
+      - POST /api/agents/execute
+      - GET /api/agents/status
+      - POST /api/agents/vote
+      - GET /api/agents/voting-sessions
+      - POST /api/agents/voting-sessions/:id/resolve
+      - GET /api/agents/activity-feed
+    </agents>
+
+    <agents_hub>
+      - GET /api/agents/list (list all available agents with metadata)
+      - GET /api/agents/:type/config (get agent configuration and presets)
+      - POST /api/agents/:type/generate (generate content with agent)
+      - POST /api/agents/:type/generate/stream (streaming generation)
+      - GET /api/agents/prompts (list all prompt presets)
+      - POST /api/agents/prompts (create custom prompt preset)
+      - PUT /api/agents/prompts/:id (update prompt preset)
+      - DELETE /api/agents/prompts/:id (delete prompt preset)
+      - GET /api/agents/context/:clientId (get assembled client context)
+      - GET /api/agents/history (get generation history)
+      - POST /api/agents/save-output (save generated content to assets)
+    </agents_hub>
+
+    <creative>
+      - GET /api/creative/assets
+      - POST /api/creative/generate
+      - GET /api/creative/:id
+      - PUT /api/creative/:id
+      - POST /api/creative/:id/iterate
+      - GET /api/creative/templates
+    </creative>
+
+    <market_intel>
+      - GET /api/intel/competitors
+      - POST /api/intel/scrape
+      - GET /api/intel/trends
+      - GET /api/intel/:clientId/report
+    </market_intel>
+
+    <performance>
+      - GET /api/performance/:campaignId
+      - GET /api/performance/:campaignId/daily
+      - GET /api/performance/winners
+      - GET /api/performance/losers
+      - GET /api/performance/memory
+      - POST /api/performance/learn
+    </performance>
+
+    <sops>
+      - GET /api/sops
+      - POST /api/sops
+      - GET /api/sops/:id
+      - PUT /api/sops/:id
+      - POST /api/sops/:id/execute
+    </sops>
+
+    <constitution>
+      - GET /api/constitution
+      - POST /api/constitution
+      - PUT /api/constitution/:id
+      - DELETE /api/constitution/:id
+    </constitution>
+
+    <reporting>
+      - GET /api/reports/:clientId/weekly
+      - GET /api/reports/:clientId/monthly
+      - POST /api/reports/generate
+      - GET /api/reports/scheduled
+    </reporting>
+
+    <settings>
+      - GET /api/settings
+      - PUT /api/settings
+      - GET /api/settings/api-keys
+      - PUT /api/settings/api-keys
+      - GET /api/settings/integrations
+      - PUT /api/settings/integrations
+    </settings>
+
+    <git>
+      - GET /api/git/commits
+      - GET /api/git/commits/:sha
+      - POST /api/git/rollback/:sha
+      - GET /api/git/diff/:sha
+    </git>
+
+    <ai_models>
+      - GET /api/models (list all active AI models in library)
+      - GET /api/models/default (get current default model)
+      - POST /api/models (add custom model to library)
+      - PATCH /api/models/:id (update model: activate/deactivate, set as default)
+      - DELETE /api/models/:id (remove model from library)
+      Purpose: Manage user-configurable model library for OpenRouter and Anthropic models
+      Features:
+        * Users can add any OpenRouter model string (e.g., "openai/gpt-4", "meta-llama/llama-3-70b")
+        * Set global default model for all operations
+        * Activate/deactivate models without deletion
+        * Only one model can be default at a time (auto-unset others when setting new default)
+    </ai_models>
+
+    <ai_provider_system>
+      - All agent and chat endpoints support optional model/provider override parameters
+      - Request body can include:
+        * provider: "anthropic" or "openrouter" (overrides DEFAULT_AI_PROVIDER)
+        * model: model string from ai_models table (overrides DEFAULT_MODEL_STRING)
+      - Provider factory abstracts differences between Anthropic SDK and OpenRouter REST API
+      - Streaming responses normalized to unified format: { type: "content"|"done", content: string }
+      - Usage tracking records provider and model used for each generation
+    </ai_provider_system>
+  </api_endpoints_summary>
+
+  <ui_layout>
+    <main_structure>
+      - Three-column layout: sidebar (navigation), main (content/dashboard), panel (Super Agent chat)
+      - Collapsible sidebar with resize handle
+      - Responsive breakpoints: mobile (single column), tablet (two column), desktop (three column)
+      - Persistent header with client selector and global search
+      - Super Agent floating button always accessible
+      - Real-time notification center
+    </main_structure>
+
+    <sidebar_left>
+      - AMA logo and branding
+      - Quick action button (New Campaign, New Client)
+      - Navigation menu (Dashboard, Clients, Campaigns, Tasks, Intel, Reports)
+      - Client quick-switch dropdown
+      - Active task indicators
+      - Red-flag alert badge
+      - Settings gear icon at bottom
+      - User profile at bottom
+      - Agents (new menu item between Intel and Reports)
+    </sidebar_left>
+
+    <main_content_area>
+      - Dynamic content based on navigation selection
+      - Dashboard: overview cards, charts, activity feed
+      - Clients: client grid/list with key metrics
+      - Campaigns: campaign cards with status and performance
+      - Tasks: Kanban board or list view of task queue
+      - Intel: competitor cards and trend charts
+      - Reports: report viewer and generator
+      - Agents: agent cards grid, generation interface, output preview
+    </main_content_area>
+
+    <super_agent_panel>
+      - Floating chat interface (can dock to right)
+      - Conversation history with context awareness
+      - Command suggestions and auto-complete
+      - Function execution progress indicators
+      - Confirmation dialogs for critical actions
+      - Voice input toggle
+      - Minimize/maximize/dock options
+      - Context indicator (current client/campaign)
+    </super_agent_panel>
+
+    <modals_overlays>
+      - Client onboarding wizard modal
+      - Campaign creation wizard modal
+      - Settings modal (tabbed interface)
+      - Red-flag resolution modal
+      - Voting session review modal
+      - Export options modal
+      - SOP editor modal
+      - Constitution rules editor
+      - Command palette overlay (Cmd/Ctrl+K)
+    </modals_overlays>
+  </ui_layout>
+
+  <design_system>
+    <color_palette>
+      - Primary: Deep Blue (#1E3A5F) for trust and professionalism
+      - Accent: Vibrant Orange (#FF6B35) for actions and highlights
+      - Success: Green (#22C55E) for positive metrics
+      - Warning: Amber (#F59E0B) for alerts
+      - Error: Red (#EF4444) for red-flags and errors
+      - Background: White (#FFFFFF light), Dark (#0F172A dark mode)
+      - Surface: Light gray (#F8FAFC light), Dark gray (#1E293B dark)
+      - Text: Near black (#1E293B light), Off-white (#F1F5F9 dark)
+      - Borders: Light gray (#E2E8F0 light), Dark gray (#334155 dark)
+    </color_palette>
+
+    <typography>
+      - Sans-serif system font stack (Inter, SF Pro, Roboto, system-ui)
+      - Headings: font-bold, tracking-tight
+      - Body: font-normal, leading-relaxed
+      - Code: Monospace (JetBrains Mono, Consolas, Monaco)
+      - Dashboard numbers: font-semibold, tabular-nums
+    </typography>
+
+    <components>
+      <metric_cards>
+        - Large number display with trend indicator
+        - Subtle background gradient
+        - Icon representation
+        - Comparison to previous period
+      </metric_cards>
+
+      <task_cards>
+        - Status badge (pending, in_progress, completed, red_flagged)
+        - Agent assignment indicator
+        - Priority level
+        - Time estimate/elapsed
+        - Quick action buttons
+      </task_cards>
+
+      <agent_avatars>
+        - Distinct icons for each agent type (Strategist, Creator, Critic, Spy)
+        - Activity status indicator
+        - Animated when processing
+      </agent_avatars>
+
+      <buttons>
+        - Primary: Gradient background (blue to purple), white text, rounded-lg
+        - Secondary: Border style with hover fill
+        - Danger: Red background for destructive actions
+        - Icon buttons: Square with hover background
+        - Disabled state: Reduced opacity, no pointer events
+      </buttons>
+
+      <inputs>
+        - Rounded borders with focus ring
+        - Textarea auto-resize
+        - Placeholder text in gray
+        - Error states in red
+        - Validation indicators
+      </inputs>
+    </components>
+
+    <animations>
+      - Smooth transitions (150-300ms)
+      - Fade in for new content
+      - Slide in for panels
+      - Pulse animation for processing agents
+      - Progress bars for long-running tasks
+      - Confetti for campaign launch
+      - Skeleton loaders for content
+    </animations>
+  </design_system>
+
+  <key_interactions>
+    <super_agent_flow>
+      1. User opens Super Agent panel (or clicks floating button)
+      2. Types natural language command (e.g., "Create a Black Friday campaign for Client X")
+      3. Agent decomposes request into tasks using MAKER framework
+      4. Agent shows proposed task breakdown and asks for confirmation
+      5. User confirms, agent begins execution
+      6. Real-time streaming shows agent progress and decisions
+      7. Multiple worker agents execute in parallel
+      8. Congress votes on creative outputs
+      9. Results stream back with artifacts and deliverables
+      10. Red-flags pause execution and prompt for human input
+    </super_agent_flow>
+
+    <client_onboarding_flow>
+      1. Click "New Client" button
+      2. Enter client URL and upload brand assets (PDFs, images)
+      3. System runs brand absorption agent
+      4. Agent extracts brand voice, ICP, and competitive landscape
+      5. System generates initial SOP set for client
+      6. User reviews and approves extracted information
+      7. System creates client workspace with all directories
+      8. Client appears in dashboard ready for campaign creation
+    </client_onboarding_flow>
+
+    <campaign_creation_flow>
+      1. Select client, click "New Campaign"
+      2. Wizard guides through angle development and offer structuring
+      3. System generates multiple angle options via Congress voting
+      4. User selects winning angles
+      5. System generates creative briefs for all formats
+      6. Parallel agents produce copy variations
+      7. Congress votes on best options
+      8. User reviews and approves final assets
+      9. Technical setup wizard (pixel, audiences, budget)
+      10. Launch checklist validation
+      11. Campaign goes live with tracking enabled
+    </campaign_creation_flow>
+
+    <optimization_loop>
+      1. System automatically pulls performance data (24h cycle)
+      2. Analyst agent identifies winners and losers
+      3. Dashboard updates with recommendations
+      4. System generates iteration briefs for winning ads
+      5. Underperformers auto-paused (or flagged for review)
+      6. Market intel agent checks for new competitor trends
+      7. New tasks auto-generated based on insights
+      8. Performance memory updated with learnings
+    </optimization_loop>
+  </key_interactions>
+
+  <implementation_steps>
+    <step number="1">
+      <title>Setup Project Foundation with Supabase and AI Provider Abstraction</title>
+      <tasks>
+        - Initialize Express server with Supabase PostgreSQL (@supabase/supabase-js)
+        - Create complete Supabase schema (17 tables including ai_models and conversation_model_preferences)
+        - Seed default AI models (Anthropic Claude variants + OpenRouter models)
+        - Build AI Provider Factory with abstraction layer:
+          * AnthropicProvider class wrapping @anthropic-ai/sdk
+          * OpenRouterProvider class for REST API calls to https://openrouter.ai/api/v1
+          * Unified interface for streaming and non-streaming completions
+          * Normalized response format across providers
+        - Set up environment variables (Supabase URL/keys, Anthropic key, OpenRouter key)
+        - Implement Git-backed state manager (progress.json, commit loop)
+        - Set up /agency_core directory structure
+        - Create health check endpoint
+        - Implement basic authentication
+        - Add model management API endpoints (GET/POST/PATCH/DELETE /api/models)
+      </tasks>
+    </step>
+
+    <step number="2">
+      <title>Build Super Agent Core</title>
+      <tasks>
+        - Create Super Agent conversational interface
+        - Implement function registry (all system capabilities)
+        - Build natural language command parser
+        - Add streaming response support with SSE
+        - Create task decomposition engine (MAKER framework)
+        - Implement confirmation flow for critical actions
+        - Build command history and context management
+      </tasks>
+    </step>
+
+    <step number="3">
+      <title>Implement Agent Congress System</title>
+      <tasks>
+        - Create base Agent class with execute/vote methods
+        - Build Strategist agent (task decomposition)
+        - Build Creator agents (Copywriter, Designer, VideoScript)
+        - Build Critic agent (voting and quality control)
+        - Implement parallel execution manager
+        - Create voting protocol (first-to-ahead-by-k)
+        - Build red-flag detection and human escalation
+      </tasks>
+    </step>
+
+    <step number="4">
+      <title>Visual Dashboard and Navigation</title>
+      <tasks>
+        - Create main layout with sidebar and content area
+        - Build navigation component with all sections
+        - Implement dashboard with metric cards and charts
+        - Add real-time task queue visualization
+        - Create agent activity feed
+        - Build notification center
+        - Add theme switching (light/dark)
+      </tasks>
+    </step>
+
+    <step number="5">
+      <title>Client Management System</title>
+      <tasks>
+        - Create client CRUD endpoints
+        - Build client onboarding wizard
+        - Implement brand absorption agent
+        - Create ICP definition tools
+        - Build competitor analysis automation
+        - Implement SWOT generation
+        - Create client workspace directory management
+      </tasks>
+    </step>
+
+    <step number="6">
+      <title>Campaign Factory</title>
+      <tasks>
+        - Create campaign CRUD endpoints
+        - Build campaign creation wizard
+        - Implement angle development with Congress voting
+        - Create offer structuring tools
+        - Build funnel mapping visual editor
+        - Implement multi-format creative generation
+        - Create launch checklist and validation
+      </tasks>
+    </step>
+
+    <step number="7">
+      <title>Creative Production Pipeline</title>
+      <tasks>
+        - Build creative asset generation endpoints
+        - Implement parallel copywriter agents
+        - Create image brief generator
+        - Build video script generator
+        - Implement email sequence builder
+        - Create landing page copy generator
+        - Build creative versioning and iteration
+      </tasks>
+    </step>
+
+    <step number="7.5">
+      <title>Agents Hub and Copy Agents</title>
+      <tasks>
+        - Create Agents page with agent cards grid
+        - Build Context Engine to assemble client data
+        - Implement Prompt Studio with preset management
+        - Create Email Sequence Agent with multi-email support
+        - Create Landing Page Agent with section-based generation
+        - Create Social Media Agent (Instagram, LinkedIn, Twitter)
+        - Create Ad Copy Agent with multi-variant generation
+        - Create Video Script Agent with structured output
+        - Implement agent tool calling for database queries
+        - Build generation history and analytics
+        - Add agent activity logging
+        - Move Email Builder and Landing Page from Reports to Agents
+      </tasks>
+    </step>
+
+    <step number="8">
+      <title>Market Intelligence System</title>
+      <tasks>
+        - Build Meta Ad Library integration
+        - Create competitor scraping agents
+        - Implement trend detection algorithms
+        - Build pattern extraction (hooks, visuals, offers)
+        - Create intel dashboard
+        - Implement auto-iteration brief generation
+      </tasks>
+    </step>
+
+    <step number="9">
+      <title>Performance Optimization Loop</title>
+      <tasks>
+        - Create performance data ingestion endpoints
+        - Build automated winner/loser identification
+        - Implement creative fatigue detection
+        - Create performance memory learning system
+        - Build optimization recommendation engine
+        - Implement automated rules and scaling protocols
+      </tasks>
+    </step>
+
+    <step number="10">
+      <title>Reporting and Communication</title>
+      <tasks>
+        - Build weekly/monthly report generators
+        - Create client dashboard templates
+        - Implement report scheduling
+        - Build meeting agenda generator
+        - Create export functionality (PDF, CSV, Notion)
+        - Implement email notification system
+      </tasks>
+    </step>
+
+    <step number="11">
+      <title>SOP and Constitution Management</title>
+      <tasks>
+        - Create SOP CRUD endpoints
+        - Build visual SOP editor
+        - Implement constitution rules management
+        - Create SOP execution tracking
+        - Build auto-update mechanism for best practices
+        - Implement client-specific overrides
+      </tasks>
+    </step>
+
+    <step number="12">
+      <title>AI Provider UI and Model Management</title>
+      <tasks>
+        - Update Settings page with AI Provider Configuration section:
+          * Default provider selector (Anthropic vs OpenRouter dropdown)
+          * Model library display with cards (provider badge, model string, description, status indicators)
+          * Add Custom Model modal (provider, model_string, display_name, description inputs)
+          * Set as default button functionality (auto-unset previous default)
+          * Activate/deactivate toggle per model
+          * Delete model confirmation dialog
+          * Fetch models on load (GET /api/models)
+          * CRUD operations integrated with backend
+        - Add model selector to Agents Hub:
+          * Dropdown above generation brief input
+          * "Use Default Model" option + all active models
+          * Pass selected model and provider to generation endpoint
+          * Persist selection during agent interaction session
+        - Add model selector to Chat/Conversation interface:
+          * Small dropdown in chat header or above input
+          * Shows current model selection
+          * Per-conversation model override
+          * Store preference in conversation_model_preferences table
+        - Update all agent generation endpoints to accept model/provider parameters
+        - Ensure streaming works correctly with both providers
+      </tasks>
+    </step>
+
+    <step number="13">
+      <title>Polish and Optimization</title>
+      <tasks>
+        - Optimize for mobile responsiveness
+        - Add command palette (Cmd+K)
+        - Implement comprehensive keyboard navigation
+        - Add onboarding flow and feature tour
+        - Create accessibility improvements
+        - Performance optimization and caching
+        - Security hardening and audit logging
+        - Test Supabase connection pooling and query performance
+        - Implement error handling for provider failures (graceful fallback)
+        - Add rate limiting monitoring for OpenRouter
+        - Document provider switching and model management in help section
+      </tasks>
+    </step>
+  </implementation_steps>
+
+  <success_criteria>
+    <functionality>
+      - Super Agent understands and executes all system functions via natural language
+      - Agent Congress produces high-quality creative with consensus voting
+      - Client onboarding completes brand absorption within 1 hour
+      - Campaign creation wizard produces launch-ready assets
+      - Performance optimization loop runs automatically every 24h
+      - Red-flag system correctly identifies high-entropy decisions
+      - Git-backed state provides full audit trail
+      - Agents Hub provides unified access to all content generation agents
+      - Copy agents produce brand-consistent content using full client context
+      - Dynamic prompt configuration enables tone customization per generation
+      - Agent tool calling successfully retrieves relevant client data
+      - Generated content respects constitution rules and brand guidelines
+      - Supabase PostgreSQL successfully stores all data with UUID primary keys and JSONB columns
+      - AI Provider abstraction seamlessly switches between Anthropic and OpenRouter
+      - OpenRouter integration provides access to 10+ different AI models
+      - Model library allows users to add/remove/configure custom models
+      - Per-conversation and per-agent model selection works correctly
+      - Default model configuration persists across sessions
+      - Streaming works identically regardless of provider (Anthropic or OpenRouter)
+      - All database queries use Supabase client correctly (no SQL injection vulnerabilities)
+    </functionality>
+
+    <user_experience>
+      - SaaS-style interface is intuitive and modern
+      - Super Agent responses are helpful and contextually aware
+      - Dashboard provides clear visibility into agency operations
+      - Navigation between clients/campaigns is seamless
+      - Mobile experience is fully functional
+      - Dark mode is fully implemented and polished
+    </user_experience>
+
+    <performance_metrics>
+      - Time to First Ad Live: < 48 hours from client onboarding
+      - Creative Variations per Month: > 50 per client
+      - Ad Compliance Rate: 100% (zero policy rejections)
+      - Human Intervention Rate: < 10% of tasks require manual override
+      - Agent Response Time: < 2 seconds for simple queries
+      - System Uptime: > 99.5%
+    </performance_metrics>
+
+    <technical_quality>
+      - Clean, maintainable code structure
+      - Proper error handling throughout
+      - Secure API key management (environment variables, never hardcoded)
+      - Optimized Supabase queries with proper indexes
+      - Connection pooling configured correctly for Supabase
+      - Efficient streaming implementation (SSE with normalized format across providers)
+      - Comprehensive logging and monitoring
+      - Git history is clean and meaningful
+      - Provider factory pattern enables easy addition of future AI providers
+      - Error handling includes graceful fallback when provider unavailable
+      - Rate limiting respected for OpenRouter API calls
+      - UUID handling consistent across all database operations
+    </technical_quality>
+
+    <design_polish>
+      - Modern, premium SaaS aesthetic
+      - Beautiful typography and spacing
+      - Smooth animations and micro-interactions
+      - Excellent contrast and accessibility
+      - Professional, polished appearance
+      - Consistent design language throughout
+    </design_polish>
+  </success_criteria>
+</project_specification>

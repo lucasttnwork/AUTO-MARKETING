@@ -1,0 +1,266 @@
+
+  // ==================== CREATIVE ASSET ENDPOINTS ====================
+
+  // Creative templates data
+  const creativeTemplates = {
+    headline: [
+      { name: "Problem-Solution", structure: "[Problem] + [Solution] + [Benefit]", example: "Tired of slow websites? Our hosting loads in 0.5s." },
+      { name: "Question Hook", structure: "[Question] + [Answer teaser]", example: "Want to double your sales? Here is how." },
+      { name: "Number-Based", structure: "[Number] + [Benefit] + [Timeframe]", example: "5 Ways to Boost ROI by 300% This Quarter" }
+    ],
+    body_copy: [
+      { name: "PAS Framework", structure: "Problem > Agitate > Solution", example: "Your ads are not converting. Every day you lose money. Our AI fixes that." },
+      { name: "AIDA Framework", structure: "Attention > Interest > Desire > Action", example: "Stop scrolling! This tool helped 10,000 marketers." }
+    ],
+    image_brief: [
+      { name: "Product Hero", structure: "Product + lighting + background", example: "Product centered, soft studio lighting, gradient background" },
+      { name: "Lifestyle Shot", structure: "Person + action + setting", example: "Young professional using laptop in modern office" }
+    ],
+    video_script: [
+      { name: "Hook-Story-Offer", structure: "Hook (3s) > Story (15s) > Offer (5s) > CTA (2s)", example: "Hook: I made 10K... Story: My journey... CTA: Link in bio" }
+    ]
+  };
+
+  // Generate creative asset
+  app.post("/api/creative/generate", async (req, res) => {
+    try {
+      const {
+        campaign_id,
+        task_id,
+        type = "headline",
+        format = "text_only",
+        brief,
+        count = 3
+      } = req.body;
+
+      if (!brief) {
+        return res.status(400).json({ error: "Brief is required" });
+      }
+
+      const validTypes = ["headline", "body_copy", "image_brief", "video_script", "email", "sms"];
+      if (!validTypes.includes(type)) {
+        return res.status(400).json({ error: "Invalid type", valid_types: validTypes });
+      }
+
+      const validFormats = ["1_1", "4_5", "9_16", "1_91_1", "text_only"];
+      if (!validFormats.includes(format)) {
+        return res.status(400).json({ error: "Invalid format", valid_formats: validFormats });
+      }
+
+      const assets = [];
+      const demos = {
+        headline: ["Transform Your Marketing With AI-Powered Insights", "Stop Wasting Ad Spend - Start Converting Today", "The Secret to 10x ROAS Revealed"],
+        body_copy: ["Struggling to scale? Our AI analyzes data to find what works. Join 5,000+ marketers.", "Every dollar should work harder. Our platform optimizes in real-time.", "Marketing should not be guesswork. Let AI handle the heavy lifting."],
+        image_brief: ["Hero shot: Product on white background, soft shadows, minimal styling.", "Lifestyle: Person using product in workspace, natural lighting.", "Comparison: Before/after split screen with metrics."],
+        video_script: ["HOOK: I was spending $10K/month with nothing to show... STORY: Then I found this tool. CTA: Link in bio.", "HOOK: Another failed campaign? PROBLEM: Sound familiar? SOLUTION: Our AI does it in seconds."],
+        email: ["Subject: Your campaign is leaving money on the table. Hi, I noticed you run ads. Want a free audit?", "Subject: Quick win for Q4 - smart marketers spend less, get more."],
+        sms: ["Flash sale! 50% off for 4 hours. Code: FLASH50", "Your cart is waiting! Free shipping for 2 hours."]
+      };
+
+      for (let i = 0; i < count; i++) {
+        let content = "";
+
+        if (anthropic) {
+          try {
+            const response = await anthropic.messages.create({
+              model: "claude-3-5-sonnet-20241022",
+              max_tokens: 1024,
+              system: "You are an expert marketing copywriter. Generate a " + type + " creative. Return ONLY the content.",
+              messages: [{ role: "user", content: brief + (i > 0 ? " (Provide a different variation)" : "") }]
+            });
+            content = response.content[0].text;
+          } catch (apiError) {
+            content = demos[type][i % demos[type].length];
+          }
+        } else {
+          content = demos[type][i % demos[type].length];
+        }
+
+        const insertStmt = db.prepare("INSERT INTO creative_assets (campaign_id, task_id, type, format, content, version, created_at) VALUES (?, ?, ?, ?, ?, 1, datetime('now'))");
+        insertStmt.run([campaign_id || null, task_id || null, type, format, content]);
+        insertStmt.free();
+
+        const idResult = db.exec("SELECT last_insert_rowid() as id");
+        const assetId = idResult[0].values[0][0];
+        saveDatabase();
+
+        assets.push({
+          id: assetId,
+          campaign_id: campaign_id || null,
+          task_id: task_id || null,
+          type,
+          format,
+          content,
+          version: 1,
+          approval_status: "pending",
+          created_at: new Date().toISOString()
+        });
+      }
+
+      res.status(201).json({ count: assets.length, assets });
+
+    } catch (error) {
+      console.error("Creative generation error:", error);
+      res.status(500).json({ error: "Failed to generate creative", message: error.message });
+    }
+  });
+
+  // Get creative assets
+  app.get("/api/creative/assets", (req, res) => {
+    try {
+      const { campaign_id, type, format, approval_status, limit = 50 } = req.query;
+
+      let query = "SELECT ca.*, c.name as campaign_name FROM creative_assets ca LEFT JOIN campaigns c ON ca.campaign_id = c.id WHERE 1=1";
+      if (campaign_id) query += " AND ca.campaign_id = " + campaign_id;
+      if (type) query += " AND ca.type = '" + type.replace(/'/g, "''") + "'";
+      if (format) query += " AND ca.format = '" + format.replace(/'/g, "''") + "'";
+      if (approval_status) query += " AND ca.approval_status = '" + approval_status.replace(/'/g, "''") + "'";
+      query += " ORDER BY ca.created_at DESC LIMIT " + parseInt(limit);
+
+      const result = execQuery(query);
+      if (!result || result.length === 0) return res.json([]);
+
+      const columns = result[0].columns;
+      const assets = result[0].values.map(row => {
+        const asset = {};
+        columns.forEach((col, idx) => { asset[col] = row[idx]; });
+        return asset;
+      });
+
+      res.json(assets);
+    } catch (error) {
+      console.error("Get creative assets error:", error);
+      res.status(500).json({ error: "Failed to get creative assets", message: error.message });
+    }
+  });
+
+  // Get single creative asset
+  app.get("/api/creative/assets/:id", (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = execQuery("SELECT * FROM creative_assets WHERE id = " + id);
+
+      if (!result || result.length === 0 || result[0].values.length === 0) {
+        return res.status(404).json({ error: "Asset not found" });
+      }
+
+      const columns = result[0].columns;
+      const values = result[0].values[0];
+      const asset = {};
+      columns.forEach((col, idx) => { asset[col] = values[idx]; });
+
+      res.json(asset);
+    } catch (error) {
+      console.error("Get creative asset error:", error);
+      res.status(500).json({ error: "Failed to get creative asset", message: error.message });
+    }
+  });
+
+  // Iterate on creative asset
+  app.post("/api/creative/assets/:id/iterate", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { feedback } = req.body;
+
+      const result = execQuery("SELECT * FROM creative_assets WHERE id = " + id);
+      if (!result || result.length === 0 || result[0].values.length === 0) {
+        return res.status(404).json({ error: "Asset not found" });
+      }
+
+      const columns = result[0].columns;
+      const values = result[0].values[0];
+      const original = {};
+      columns.forEach((col, idx) => { original[col] = values[idx]; });
+
+      let newContent = original.content + " [Improved version]";
+
+      if (anthropic) {
+        try {
+          const response = await anthropic.messages.create({
+            model: "claude-3-5-sonnet-20241022",
+            max_tokens: 1024,
+            system: "You are an expert copywriter. Improve the given creative.",
+            messages: [{ role: "user", content: "Original: " + original.content + ". Feedback: " + (feedback || "Make it better") }]
+          });
+          newContent = response.content[0].text;
+        } catch (apiError) {
+          // Keep default
+        }
+      }
+
+      const versionResult = execQuery("SELECT MAX(version) as max_version FROM creative_assets WHERE campaign_id = " + (original.campaign_id || "NULL") + " AND type = '" + original.type + "'");
+      const maxVersion = (versionResult[0]?.values[0]?.[0] || 1);
+
+      const insertStmt = db.prepare("INSERT INTO creative_assets (campaign_id, task_id, type, format, content, version, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))");
+      insertStmt.run([original.campaign_id, original.task_id, original.type, original.format, newContent, maxVersion + 1]);
+      insertStmt.free();
+
+      const idResult = db.exec("SELECT last_insert_rowid() as id");
+      const newAssetId = idResult[0].values[0][0];
+      saveDatabase();
+
+      res.status(201).json({
+        id: newAssetId,
+        campaign_id: original.campaign_id,
+        type: original.type,
+        format: original.format,
+        content: newContent,
+        version: maxVersion + 1,
+        previous_version_id: parseInt(id),
+        created_at: new Date().toISOString()
+      });
+
+    } catch (error) {
+      console.error("Creative iteration error:", error);
+      res.status(500).json({ error: "Failed to iterate creative", message: error.message });
+    }
+  });
+
+  // Update creative asset
+  app.patch("/api/creative/assets/:id", (req, res) => {
+    try {
+      const { id } = req.params;
+      const { approval_status, performance_score } = req.body;
+
+      const updates = [];
+      if (approval_status) updates.push("approval_status = '" + approval_status.replace(/'/g, "''") + "'");
+      if (performance_score !== undefined) updates.push("performance_score = " + parseFloat(performance_score));
+      updates.push("updated_at = datetime('now')");
+
+      db.run("UPDATE creative_assets SET " + updates.join(", ") + " WHERE id = " + id);
+      saveDatabase();
+
+      const result = execQuery("SELECT * FROM creative_assets WHERE id = " + id);
+      if (!result || result.length === 0 || result[0].values.length === 0) {
+        return res.status(404).json({ error: "Asset not found" });
+      }
+
+      const columns = result[0].columns;
+      const values = result[0].values[0];
+      const asset = {};
+      columns.forEach((col, idx) => { asset[col] = values[idx]; });
+
+      res.json(asset);
+    } catch (error) {
+      console.error("Update creative asset error:", error);
+      res.status(500).json({ error: "Failed to update creative asset", message: error.message });
+    }
+  });
+
+  // Get creative templates
+  app.get("/api/creative/templates", (req, res) => {
+    try {
+      const { type } = req.query;
+
+      if (type && creativeTemplates[type]) {
+        return res.json({ type, templates: creativeTemplates[type] });
+      }
+
+      res.json({ types: Object.keys(creativeTemplates), templates: creativeTemplates });
+    } catch (error) {
+      console.error("Get creative templates error:", error);
+      res.status(500).json({ error: "Failed to get creative templates", message: error.message });
+    }
+  });
+
+  // ==================== END CREATIVE ASSET ENDPOINTS ====================

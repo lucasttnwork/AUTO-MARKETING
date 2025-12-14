@@ -1,0 +1,8 @@
+if (icp_data !== undefined) {
+        updates.push('icp_data = ?');
+        params.push(JSON.stringify(icp_data));
+      }
+      if (swot_data !== undefined) {
+        updates.push('swot_data = ?');
+        params.push(JSON.stringify(swot_data));
+      }

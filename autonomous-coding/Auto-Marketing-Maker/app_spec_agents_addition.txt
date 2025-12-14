@@ -1,0 +1,260 @@
+================================================================================
+                    ADIÇÃO AO APP_SPEC.TXT - SEÇÃO AGENTS
+================================================================================
+
+Adicionar esta seção dentro de <core_features> após </reporting_communication>:
+
+--------------------------------------------------------------------------------
+
+    <agents_hub>
+      <overview>
+        Centralized hub for all AI-powered content generation agents. Each agent 
+        specializes in a specific type of marketing content and can access full 
+        client context including brand voice, ICP data, performance history, and 
+        active campaigns. Agents support dynamic system prompts with customizable 
+        presets and can use internal tools to query relevant data during generation.
+      </overview>
+
+      <context_engine>
+        - Automatic client context assembly when agent is invoked
+        - Injects brand_voice, icp_data, constitution rules, performance_memory
+        - Loads active campaigns and their angles for consistency
+        - Fetches top-performing creative elements (hooks, CTAs, headlines)
+        - Supports RAG-style retrieval from client's historical content
+        - Context is passed to agent as structured JSON in system prompt
+      </context_engine>
+
+      <prompt_studio>
+        - Dynamic system prompt configuration per agent
+        - Preset library: Conversion-focused, Consultative, Institutional, Friendly, Urgent
+        - Custom prompt editor with syntax highlighting
+        - Variable interpolation: {{client_name}}, {{brand_voice}}, {{icp_summary}}, {{top_hooks}}
+        - Prompt templates can be saved per client
+        - A/B testing of different prompt configurations
+        - Prompt version history with rollback
+      </prompt_studio>
+
+      <copy_agents>
+        <email_sequence_agent>
+          - Types: Welcome, Abandoned Cart, Post-Purchase, Re-engagement, Nurture, Launch
+          - Multi-email sequence generation (3-7 emails per sequence)
+          - Subject line A/B variants generation
+          - Preview text optimization
+          - CTA button copy variations
+          - Personalization placeholders support
+          - HTML-ready output option
+        </email_sequence_agent>
+
+        <landing_page_agent>
+          - Full landing page copy generation
+          - Sections: Hero, Problem, Solution, Features, Social Proof, FAQ, CTA
+          - Multiple headline variations per section
+          - SEO meta description generation
+          - Above-fold and below-fold optimization
+          - Mobile-first copy considerations
+          - Wireframe-style section preview
+        </landing_page_agent>
+
+        <social_media_agent>
+          - Instagram posts (single image captions)
+          - Instagram carousels (multi-slide copy with hooks per slide)
+          - Instagram Reels/TikTok scripts (hook, body, CTA, caption)
+          - LinkedIn posts (professional tone)
+          - Twitter/X threads
+          - Facebook ad copy (primary text, headline, description)
+          - Platform-specific character limits enforced
+          - Hashtag suggestions based on niche
+        </social_media_agent>
+
+        <ad_copy_agent>
+          - Facebook/Instagram ad copy (all placements)
+          - Google Ads copy (headlines, descriptions, display URLs)
+          - YouTube ad scripts (pre-roll, mid-roll)
+          - Native ad copy
+          - Multi-variant generation (5-10 variations per request)
+          - Hook library integration
+          - Compliance check against constitution rules
+        </ad_copy_agent>
+
+        <content_strategy_agent>
+          - Editorial calendar generation (30/60/90 days)
+          - Content pillar definition
+          - Topic clusters and keyword mapping
+          - Content gap analysis
+          - Competitor content audit summaries
+          - Trending topic suggestions
+          - Content repurposing recommendations
+        </content_strategy_agent>
+
+        <video_script_agent>
+          - UGC-style video scripts
+          - Talking head scripts
+          - Product demo scripts
+          - Testimonial frameworks
+          - Hook → Problem → Solution → CTA structure
+          - Timestamp-based shot suggestions
+          - B-roll recommendations
+        </video_script_agent>
+
+        <sms_whatsapp_agent>
+          - SMS campaigns (160 char limit)
+          - WhatsApp marketing messages
+          - Broadcast sequences
+          - Conversational flows
+          - Emoji optimization
+          - Link shortener integration
+        </sms_whatsapp_agent>
+      </copy_agents>
+
+      <strategic_agents>
+        <brand_voice_analyzer>
+          - Extract brand voice from existing content
+          - Tone analysis (formal, casual, professional, playful)
+          - Vocabulary patterns identification
+          - Writing style guide generation
+          - Competitor voice comparison
+        </brand_voice_analyzer>
+
+        <icp_researcher>
+          - Ideal Customer Profile deep dive
+          - Pain points expansion
+          - Desire mapping
+          - Objection anticipation
+          - Customer journey mapping
+          - Persona card generation
+        </icp_researcher>
+
+        <competitor_spy>
+          - Ad library analysis
+          - Landing page teardowns
+          - Messaging pattern extraction
+          - Weakness identification
+          - Differentiation opportunities
+        </competitor_spy>
+      </strategic_agents>
+
+      <agent_tools>
+        - query_brand_voice(client_id): Retrieve full brand voice document
+        - query_icp(client_id): Get ICP data with pain points and desires
+        - query_top_performers(client_id, element_type, limit): Get best performing hooks/CTAs/headlines
+        - query_active_campaigns(client_id): Get current campaign angles and offers
+        - query_constitution(client_id): Get compliance rules and brand guidelines
+        - query_competitor_intel(client_id): Get recent competitor analysis
+        - save_to_creative_assets(content, type, campaign_id): Save generated content
+        - log_generation(agent_type, input, output, tokens): Track usage
+      </agent_tools>
+
+      <agent_ui_components>
+        - Agent card with icon, name, description, and "Generate" CTA
+        - Client selector (required before generation)
+        - Prompt preset dropdown
+        - Custom prompt editor (collapsible)
+        - Brief/input textarea with rich formatting
+        - Output preview with copy/edit/regenerate actions
+        - Save to campaign/client assets button
+        - Usage stats (tokens, generations this month)
+        - Agent activity history sidebar
+      </agent_ui_components>
+
+      <generation_workflow>
+        1. User selects agent from Agents hub
+        2. User selects target client (required)
+        3. System auto-loads client context via Context Engine
+        4. User optionally adjusts system prompt preset or custom prompt
+        5. User provides brief/input for generation
+        6. Agent executes with full context + tools available
+        7. Output streams in real-time with SSE
+        8. User can regenerate, edit, or save output
+        9. Generation logged to agent_executions table
+        10. Option to save to creative_assets linked to campaign
+      </generation_workflow>
+    </agents_hub>
+
+--------------------------------------------------------------------------------
+
+Adicionar ao <sidebar_left> após "Intel, Reports":
+
+      - Agents (new menu item between Intel and Reports)
+        - Submenu: Copy Agents, Strategic Agents, Content Calendar
+        - Badge showing active generations count
+
+--------------------------------------------------------------------------------
+
+Adicionar ao <ui_layout>/<main_content_area>:
+
+      - Agents: agent cards grid, generation interface, output preview
+
+--------------------------------------------------------------------------------
+
+Adicionar novas tabelas ao <database_schema>:
+
+      <agent_prompts>
+        - id, agent_type, client_id (null for global)
+        - preset_name, system_prompt_template
+        - variables (JSON array of variable names)
+        - is_default, is_active
+        - created_at, updated_at
+      </agent_prompts>
+
+      <agent_generations>
+        - id, agent_type, client_id, campaign_id
+        - input_brief, system_prompt_used
+        - output_content, output_variations (JSON)
+        - tokens_input, tokens_output
+        - generation_time_ms, model_used
+        - user_rating (1-5), feedback
+        - created_at
+      </agent_generations>
+
+--------------------------------------------------------------------------------
+
+Adicionar aos <api_endpoints_summary>:
+
+    <agents_hub>
+      - GET /api/agents/list (list all available agents with metadata)
+      - GET /api/agents/:type/config (get agent configuration and presets)
+      - POST /api/agents/:type/generate (generate content with agent)
+      - POST /api/agents/:type/generate/stream (streaming generation)
+      - GET /api/agents/prompts (list all prompt presets)
+      - POST /api/agents/prompts (create custom prompt preset)
+      - PUT /api/agents/prompts/:id (update prompt preset)
+      - DELETE /api/agents/prompts/:id (delete prompt preset)
+      - GET /api/agents/context/:clientId (get assembled client context)
+      - GET /api/agents/history (get generation history)
+      - POST /api/agents/save-output (save generated content to assets)
+    </agents_hub>
+
+--------------------------------------------------------------------------------
+
+Adicionar ao <implementation_steps> um novo step após o step 7:
+
+    <step number="7.5">
+      <title>Agents Hub and Copy Agents</title>
+      <tasks>
+        - Create Agents page with agent cards grid
+        - Build Context Engine to assemble client data
+        - Implement Prompt Studio with preset management
+        - Create Email Sequence Agent with multi-email support
+        - Create Landing Page Agent with section-based generation
+        - Create Social Media Agent (Instagram, LinkedIn, Twitter)
+        - Create Ad Copy Agent with multi-variant generation
+        - Create Video Script Agent with structured output
+        - Implement agent tool calling for database queries
+        - Build generation history and analytics
+        - Add agent activity logging
+        - Move Email Builder and Landing Page from Reports to Agents
+      </tasks>
+    </step>
+
+--------------------------------------------------------------------------------
+
+Atualizar <success_criteria>/<functionality>:
+
+      - Agents Hub provides unified access to all content generation agents
+      - Copy agents produce brand-consistent content using full client context
+      - Dynamic prompt configuration enables tone customization per generation
+      - Agent tool calling successfully retrieves relevant client data
+      - Generated content respects constitution rules and brand guidelines
+
+================================================================================
+

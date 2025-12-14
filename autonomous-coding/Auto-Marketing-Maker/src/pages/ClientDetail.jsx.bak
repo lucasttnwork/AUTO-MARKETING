@@ -1,0 +1,700 @@
+import { useState, useEffect } from 'react'
+import { useParams, useNavigate, Link } from 'react-router-dom'
+
+export default function ClientDetail() {
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const [client, setClient] = useState(null)
+  const [campaigns, setCampaigns] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState('overview')
+  const [showIcpWizard, setShowIcpWizard] = useState(false)
+  const [swotData, setSwotData] = useState(null)
+  const [swotLoading, setSwotLoading] = useState(false)
+  const [icpData, setIcpData] = useState({
+    // Demographics
+    ageRange: '',
+    gender: '',
+    location: '',
+    incomeLevel: '',
+    education: '',
+    // Psychographics
+    interests: '',
+    values: '',
+    lifestyle: '',
+    painPoints: '',
+    desires: ''
+  })
+
+  useEffect(() => {
+    fetchClientDetails()
+    fetchClientCampaigns()
+  }, [id])
+
+  useEffect(() => {
+    // Load ICP data from client when available
+    if (client && client.icp_data) {
+      try {
+        const parsedIcp = typeof client.icp_data === 'string'
+          ? JSON.parse(client.icp_data)
+          : client.icp_data
+        setIcpData({
+          ageRange: parsedIcp.ageRange || '',
+          gender: parsedIcp.gender || '',
+          location: parsedIcp.location || '',
+          incomeLevel: parsedIcp.incomeLevel || '',
+          education: parsedIcp.education || '',
+          interests: parsedIcp.interests || '',
+          values: parsedIcp.values || '',
+          lifestyle: parsedIcp.lifestyle || '',
+          painPoints: parsedIcp.painPoints || '',
+          desires: parsedIcp.desires || ''
+        })
+      } catch (error) {
+        console.error('Error parsing ICP data:', error)
+      }
+    }
+  }, [client])
+
+  const fetchClientDetails = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/clients/${id}`)
+      if (response.ok) {
+        const data = await response.json()
+        setClient(data)
+      } else {
+        console.error('Failed to fetch client')
+      }
+    } catch (error) {
+      console.error('Error fetching client:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchClientCampaigns = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/campaigns?client_id=${id}`)
+      if (response.ok) {
+        const data = await response.json()
+        setCampaigns(data)
+      }
+    } catch (error) {
+      console.error('Error fetching campaigns:', error)
+    }
+  }
+
+  const handleArchive = async () => {
+    if (!confirm('Are you sure you want to archive this client?')) {
+      return
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3001/api/clients/${id}`, {
+        method: 'DELETE'
+      })
+      if (response.ok) {
+        navigate('/clients')
+      }
+    } catch (error) {
+      console.error('Error archiving client:', error)
+    }
+  }
+
+  const handleSaveIcp = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/clients/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          icp_data: icpData
+        })
+      })
+
+      if (response.ok) {
+        const updatedClient = await response.json()
+        setClient(updatedClient)
+        setShowIcpWizard(false)
+        alert('ICP data saved successfully!')
+      } else {
+        alert('Failed to save ICP data')
+      }
+    } catch (error) {
+      console.error('Error saving ICP data:', error)
+      alert('Error saving ICP data')
+    }
+  }
+
+  const handleIcpChange = (field, value) => {
+    setIcpData(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  if (loading) {
+    return (
+      <div className="p-8">
+        <div className="animate-pulse">
+          <div className="h-8 bg-slate-700 rounded w-1/4 mb-4"></div>
+          <div className="h-4 bg-slate-700 rounded w-1/2"></div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!client) {
+    return (
+      <div className="p-8">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold tracking-tight mb-4">Client not found</h2>
+          <Link to="/clients" className="text-blue-400 hover:text-blue-300">
+            ← Back to Clients
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
+  const tabs = [
+    { id: 'overview', label: 'Overview', icon: '📋' },
+    { id: 'campaigns', label: 'Campaigns', icon: '🎯' },
+    { id: 'brand-voice', label: 'Brand Voice', icon: '🎨' },
+    { id: 'icp', label: 'ICP', icon: '👥' }
+  ]
+
+  return (
+    <div className="p-8">
+      {/* Header */}
+      <div className="mb-6">
+        <Link to="/clients" className="text-blue-400 hover:text-blue-300 mb-4 inline-block">
+          ← Back to Clients
+        </Link>
+
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+              <span className="text-2xl font-bold text-white">
+                {client.name.charAt(0).toUpperCase()}
+              </span>
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+                {client.name}
+              </h1>
+              <div className="flex items-center gap-3 mt-2">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-500/10 text-green-400">
+                  {client.status}
+                </span>
+                {client.website_url && (
+                  <a
+                    href={client.website_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:text-blue-300 text-sm"
+                  >
+                    🔗 {client.website_url}
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-2">
+            <button
+              onClick={() => {/* TODO: Edit functionality */}}
+              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-lg transition-colors"
+            >
+              ✏️ Edit
+            </button>
+            <button
+              onClick={handleArchive}
+              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-lg transition-colors"
+            >
+              📦 Archive
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div className="border-b border-slate-700 mb-6">
+        <nav className="flex gap-8">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`pb-4 px-1 border-b-2 font-medium transition-colors ${
+                activeTab === tab.id
+                  ? 'border-blue-500 text-blue-400'
+                  : 'border-transparent text-slate-400 hover:text-slate-300'
+              }`}
+            >
+              <span className="mr-2">{tab.icon}</span>
+              {tab.label}
+            </button>
+          ))}
+        </nav>
+      </div>
+
+      {/* Tab Content */}
+      <div className="bg-slate-800 rounded-lg p-6">
+        {activeTab === 'overview' && (
+          <div>
+            <h2 className="text-xl font-bold tracking-tight text-slate-100 mb-4">
+              Client Information
+            </h2>
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium text-slate-400">Client Name</label>
+                <p className="text-slate-100 mt-1">{client.name}</p>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-slate-400">Website</label>
+                <p className="text-slate-100 mt-1">
+                  {client.website_url ? (
+                    <a
+                      href={client.website_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-400 hover:text-blue-300"
+                    >
+                      {client.website_url}
+                    </a>
+                  ) : (
+                    <span className="text-slate-500">Not provided</span>
+                  )}
+                </p>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-slate-400">Status</label>
+                <p className="text-slate-100 mt-1 capitalize">{client.status}</p>
+              </div>
+
+              {client.custom_instructions && (
+                <div>
+                  <label className="text-sm font-medium text-slate-400">Custom Instructions</label>
+                  <p className="text-slate-100 mt-1 leading-relaxed">{client.custom_instructions}</p>
+                </div>
+              )}
+
+              <div>
+                <label className="text-sm font-medium text-slate-400">Created</label>
+                <p className="text-slate-100 mt-1">
+                  {new Date(client.created_at).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </p>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-slate-400">Last Updated</label>
+                <p className="text-slate-100 mt-1">
+                  {new Date(client.updated_at).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'campaigns' && (
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold tracking-tight text-slate-100">
+                Campaigns
+              </h2>
+              <Link
+                to="/campaigns"
+                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all"
+              >
+                + New Campaign
+              </Link>
+            </div>
+
+            {campaigns.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-slate-400 mb-4">No campaigns yet</p>
+                <Link
+                  to="/campaigns"
+                  className="text-blue-400 hover:text-blue-300"
+                >
+                  Create your first campaign →
+                </Link>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {campaigns.map((campaign) => (
+                  <div
+                    key={campaign.id}
+                    className="bg-slate-700/50 rounded-lg p-4 hover:bg-slate-700 transition-colors"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-slate-100">{campaign.name}</h3>
+                        {campaign.description && (
+                          <p className="text-sm text-slate-400 mt-1 leading-relaxed">
+                            {campaign.description}
+                          </p>
+                        )}
+                        <div className="flex items-center gap-3 mt-2">
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            campaign.status === 'active'
+                              ? 'bg-green-500/10 text-green-400'
+                              : campaign.status === 'draft'
+                              ? 'bg-slate-500/10 text-slate-400'
+                              : campaign.status === 'paused'
+                              ? 'bg-amber-500/10 text-amber-400'
+                              : 'bg-blue-500/10 text-blue-400'
+                          }`}>
+                            {campaign.status}
+                          </span>
+                          {campaign.target_roas && (
+                            <span className="text-sm text-slate-400">
+                              Target ROAS: {campaign.target_roas}x
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <Link
+                        to={`/campaigns`}
+                        className="text-blue-400 hover:text-blue-300 text-sm"
+                      >
+                        View Details →
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'brand-voice' && (
+          <div>
+            <h2 className="text-xl font-bold tracking-tight text-slate-100 mb-4">
+              Brand Voice
+            </h2>
+            <div className="space-y-4">
+              <div className="bg-slate-700/50 rounded-lg p-6 text-center">
+                <p className="text-slate-400 mb-4">
+                  Brand voice analysis not yet performed
+                </p>
+                <button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all">
+                  🤖 Generate Brand Voice Analysis
+                </button>
+              </div>
+
+              <div className="text-sm text-slate-500">
+                <p className="leading-relaxed">
+                  The brand voice analysis will extract tone, messaging pillars, and values
+                  from the client's website and existing content to ensure consistent
+                  messaging across all campaigns.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'icp' && (
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold tracking-tight text-slate-100">
+                Ideal Customer Profile (ICP)
+              </h2>
+              {!showIcpWizard && (
+                <button
+                  onClick={() => setShowIcpWizard(true)}
+                  className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all"
+                >
+                  {icpData.ageRange || icpData.interests ? '✏️ Edit ICP' : '👥 Define ICP'}
+                </button>
+              )}
+            </div>
+
+            {showIcpWizard ? (
+              <div className="space-y-6">
+                {/* Demographics Section */}
+                <div className="bg-slate-700/50 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
+                    <span>📊</span>
+                    Demographics
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                        Age Range *
+                      </label>
+                      <input
+                        type="text"
+                        value={icpData.ageRange}
+                        onChange={(e) => handleIcpChange('ageRange', e.target.value)}
+                        placeholder="e.g., 25-45"
+                        className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                        Gender
+                      </label>
+                      <select
+                        value={icpData.gender}
+                        onChange={(e) => handleIcpChange('gender', e.target.value)}
+                        className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">Select gender</option>
+                        <option value="all">All</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                        Location *
+                      </label>
+                      <input
+                        type="text"
+                        value={icpData.location}
+                        onChange={(e) => handleIcpChange('location', e.target.value)}
+                        placeholder="e.g., USA, UK, Global"
+                        className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                        Income Level
+                      </label>
+                      <input
+                        type="text"
+                        value={icpData.incomeLevel}
+                        onChange={(e) => handleIcpChange('incomeLevel', e.target.value)}
+                        placeholder="e.g., $50k-$100k"
+                        className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                        Education
+                      </label>
+                      <input
+                        type="text"
+                        value={icpData.education}
+                        onChange={(e) => handleIcpChange('education', e.target.value)}
+                        placeholder="e.g., High School, Bachelor's, Master's"
+                        className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Psychographics Section */}
+                <div className="bg-slate-700/50 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
+                    <span>🧠</span>
+                    Psychographics
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                        Interests *
+                      </label>
+                      <textarea
+                        value={icpData.interests}
+                        onChange={(e) => handleIcpChange('interests', e.target.value)}
+                        placeholder="What are your ideal customers interested in? (hobbies, activities, topics)"
+                        rows={3}
+                        className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                        Values *
+                      </label>
+                      <textarea
+                        value={icpData.values}
+                        onChange={(e) => handleIcpChange('values', e.target.value)}
+                        placeholder="What do they care about? (sustainability, innovation, family, success)"
+                        rows={3}
+                        className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                        Lifestyle *
+                      </label>
+                      <textarea
+                        value={icpData.lifestyle}
+                        onChange={(e) => handleIcpChange('lifestyle', e.target.value)}
+                        placeholder="Describe their daily life and habits"
+                        rows={3}
+                        className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                        Pain Points *
+                      </label>
+                      <textarea
+                        value={icpData.painPoints}
+                        onChange={(e) => handleIcpChange('painPoints', e.target.value)}
+                        placeholder="What problems are they facing? What frustrates them?"
+                        rows={3}
+                        className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                        Desires *
+                      </label>
+                      <textarea
+                        value={icpData.desires}
+                        onChange={(e) => handleIcpChange('desires', e.target.value)}
+                        placeholder="What do they want to achieve? What are their goals and aspirations?"
+                        rows={3}
+                        className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex justify-end gap-3">
+                  <button
+                    onClick={() => setShowIcpWizard(false)}
+                    className="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-lg transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleSaveIcp}
+                    className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all"
+                  >
+                    💾 Save ICP Data
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                {icpData.ageRange || icpData.interests ? (
+                  // Display existing ICP data
+                  <div className="space-y-6">
+                    {/* Demographics Display */}
+                    <div className="bg-slate-700/50 rounded-lg p-6">
+                      <h3 className="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
+                        <span>📊</span>
+                        Demographics
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {icpData.ageRange && (
+                          <div>
+                            <label className="text-sm font-medium text-slate-400">Age Range</label>
+                            <p className="text-slate-100 mt-1">{icpData.ageRange}</p>
+                          </div>
+                        )}
+                        {icpData.gender && (
+                          <div>
+                            <label className="text-sm font-medium text-slate-400">Gender</label>
+                            <p className="text-slate-100 mt-1 capitalize">{icpData.gender}</p>
+                          </div>
+                        )}
+                        {icpData.location && (
+                          <div>
+                            <label className="text-sm font-medium text-slate-400">Location</label>
+                            <p className="text-slate-100 mt-1">{icpData.location}</p>
+                          </div>
+                        )}
+                        {icpData.incomeLevel && (
+                          <div>
+                            <label className="text-sm font-medium text-slate-400">Income Level</label>
+                            <p className="text-slate-100 mt-1">{icpData.incomeLevel}</p>
+                          </div>
+                        )}
+                        {icpData.education && (
+                          <div className="md:col-span-2">
+                            <label className="text-sm font-medium text-slate-400">Education</label>
+                            <p className="text-slate-100 mt-1">{icpData.education}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Psychographics Display */}
+                    <div className="bg-slate-700/50 rounded-lg p-6">
+                      <h3 className="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
+                        <span>🧠</span>
+                        Psychographics
+                      </h3>
+                      <div className="space-y-4">
+                        {icpData.interests && (
+                          <div>
+                            <label className="text-sm font-medium text-slate-400">Interests</label>
+                            <p className="text-slate-100 mt-1 leading-relaxed">{icpData.interests}</p>
+                          </div>
+                        )}
+                        {icpData.values && (
+                          <div>
+                            <label className="text-sm font-medium text-slate-400">Values</label>
+                            <p className="text-slate-100 mt-1 leading-relaxed">{icpData.values}</p>
+                          </div>
+                        )}
+                        {icpData.lifestyle && (
+                          <div>
+                            <label className="text-sm font-medium text-slate-400">Lifestyle</label>
+                            <p className="text-slate-100 mt-1 leading-relaxed">{icpData.lifestyle}</p>
+                          </div>
+                        )}
+                        {icpData.painPoints && (
+                          <div>
+                            <label className="text-sm font-medium text-slate-400">Pain Points</label>
+                            <p className="text-slate-100 mt-1 leading-relaxed">{icpData.painPoints}</p>
+                          </div>
+                        )}
+                        {icpData.desires && (
+                          <div>
+                            <label className="text-sm font-medium text-slate-400">Desires</label>
+                            <p className="text-slate-100 mt-1 leading-relaxed">{icpData.desires}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  // Empty state
+                  <div className="bg-slate-700/50 rounded-lg p-6 text-center">
+                    <p className="text-slate-400 mb-4">
+                      No ICP defined yet
+                    </p>
+                    <div className="text-sm text-slate-500">
+                      <p className="leading-relaxed">
+                        The Ideal Customer Profile (ICP) defines your target audience including
+                        demographics, psychographics, pain points, and desires. This ensures
+                        campaigns are precisely targeted to reach the right people.
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
